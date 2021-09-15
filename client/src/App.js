@@ -1,12 +1,11 @@
-import {
-  BrowserRouter as Router,
-  Redirect,
-  Route,
-  Switch,
-} from "react-router-dom";
+import Routes from "./Routes";
 
 function App() {
-  return <p>Hello</p>;
+  return (
+    <>
+      <Routes />
+    </>
+  );
 }
 
 export default App;

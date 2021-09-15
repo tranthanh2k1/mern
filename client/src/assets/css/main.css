@@ -1,0 +1,48 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  /* 300 500 */
+  font-family: "Quicksand", sans-serif;
+}
+
+.container {
+  width: 1200px;
+  margin: 0 auto;
+}
+
+.full-width {
+  width: 100%;
+  display: block;
+}
+
+.grid-col-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.mt-30 {
+  margin-top: 30px;
+}
+
+.form__error {
+  color: #e84118;
+  margin: 3px 0 0 5px;
+}
+
+/* Tablet - PC low resolution */
+@media (min-width: 740px) and (max-width: 1023px) {
+  .container {
+    width: 644px;
+  }
+}
+
+/* PC low réolution */
+@media (min-width: 1024px) and (max-width: 1239px) {
+  .container {
+    width: 984px;
+  }
+}

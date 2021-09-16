@@ -1,16 +1,17 @@
-import express from "express";
-import dotenv from "dotenv";
-import morgan from "morgan";
-import mongoose from "mongoose";
+const express = require("express");
+const dotenv = require("dotenv");
+const morgan = require("morgan");
+const mongoose = require("mongoose");
+const cors = require("cors");
 
-import authRoutes from "./routers/auth.js";
+const authRoutes = require("./routers/auth.js");
 
 dotenv.config();
 const app = express();
 
 // Connection to DB
 mongoose
-  .connect(process.env.MONGO_URL, {
+  .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -25,6 +26,7 @@ mongoose
 // Middleware
 app.use(morgan("dev"));
 app.use(express.json());
+app.use(cors());
 
 // Routes Middlewares
 app.use("/api", authRoutes);

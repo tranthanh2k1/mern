@@ -1,5 +1,7 @@
+import { API } from "../../config";
+
 export const signup = (data) => {
-  return fetch(`http://localhost:4000/api/register`, {
+  return fetch(`${API}/register`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -11,7 +13,7 @@ export const signup = (data) => {
 };
 
 export const signin = (data) => {
-  return fetch(`http://localhost:4000/api/login`, {
+  return fetch(`${API}/login`, {
     method: "POST",
     headers: {
       Accept: "appliaction/json",

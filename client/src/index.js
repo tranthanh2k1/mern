@@ -2,9 +2,13 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
+
 import "./assets/css/main.css";
 import "./pages/website/user/Login/login.css";
 import "./pages/website/user/Register/register.css";
+import "./layouts/layoutAdmin/layout-admin.css";
+import "./pages/admin/categories/category.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 import rootReducer from "./redux/reducers";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";

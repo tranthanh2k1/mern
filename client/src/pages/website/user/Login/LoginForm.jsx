@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useForm } from "react-hook-form"
-import { useSelector, useDispatch } from "react-redux"
 import { signin } from '../../../../redux/actions/auth'
-import axios from "axios"
 
 const LoginForm = () => {
     const { register, handleSubmit, formState: { errors } } = useForm()

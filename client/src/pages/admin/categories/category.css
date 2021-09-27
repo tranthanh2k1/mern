@@ -1,0 +1,15 @@
+.layout-content {
+  border: 1px solid #ccc;
+  background-color: #fff;
+  height: 100vh;
+}
+
+.layout-content-padding {
+  padding: 25px;
+}
+
+.list-cate {
+  float: right;
+  position: relative;
+  top: -30px;
+}

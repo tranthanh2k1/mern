@@ -9,11 +9,6 @@ html {
   font-family: "Quicksand", sans-serif;
 }
 
-.container {
-  width: 1200px;
-  margin: 0 auto;
-}
-
 .full-width {
   width: 100%;
   display: block;
@@ -33,16 +28,22 @@ html {
   margin: 3px 0 0 5px;
 }
 
+/* description: có dùng lại cho phần sau */
+/* .container {
+  width: 1200px;
+  margin: 0 auto;
+} */
+
 /* Tablet - PC low resolution */
-@media (min-width: 740px) and (max-width: 1023px) {
+/* @media (min-width: 740px) and (max-width: 1023px) {
   .container {
     width: 644px;
   }
-}
+} */
 
 /* PC low réolution */
-@media (min-width: 1024px) and (max-width: 1239px) {
+/* @media (min-width: 1024px) and (max-width: 1239px) {
   .container {
     width: 984px;
   }
-}
+} */

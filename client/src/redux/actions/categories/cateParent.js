@@ -11,7 +11,7 @@ export const listParentCategory = () => async (dispatch) => {
   } else {
     dispatch({
       type: "API_FAIL",
-      payload: data.message,
+      payload: { error: data.message, success: data.success },
     });
   }
 };
@@ -22,12 +22,16 @@ export const addCategory = (dataForm) => async (dispatch) => {
   if (data.success) {
     dispatch({
       type: "ADD_CATEGORY",
-      payload: data,
+      payload: {
+        data: data.category,
+        message: data.message,
+        success: data.success,
+      },
     });
   } else {
     dispatch({
       type: "API_FAIL",
-      payload: data.message,
+      payload: { error: data.message, success: data.success },
     });
   }
 };
@@ -43,7 +47,7 @@ export const removeCategory = (id) => async (dispatch) => {
   } else {
     dispatch({
       type: "API_FAIL",
-      payload: data.message,
+      payload: { error: data.message, success: data.success },
     });
   }
 };
@@ -55,6 +59,11 @@ export const updateCategory = (dataForm, id) => async (dispatch) => {
     dispatch({
       type: "UPDATE_CATEGORY",
       payload: data.updateCategory,
+    });
+  } else {
+    dispatch({
+      type: "API_FAIL",
+      payload: { error: data.message, success: data.success },
     });
   }
 };

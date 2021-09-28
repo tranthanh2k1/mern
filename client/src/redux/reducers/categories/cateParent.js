@@ -2,6 +2,7 @@ const initialState = {
   listCategory: [],
   message: "",
   error: "",
+  success: null,
 };
 
 const cateParentReducer = (state = initialState, action) => {
@@ -9,8 +10,10 @@ const cateParentReducer = (state = initialState, action) => {
     case "ADD_CATEGORY":
       return {
         ...state,
-        listCategory: [...state.listCategory, action.payload],
+        listCategory: [...state.listCategory, action.payload.data],
+        message: action.payload.message,
         error: "",
+        success: action.payload.success,
       };
     case "LIST_PARENT_CATEGORY":
       return {
@@ -21,8 +24,9 @@ const cateParentReducer = (state = initialState, action) => {
     case "API_FAIL":
       return {
         ...state,
-        error: action.payload,
+        error: action.payload.error,
         message: "",
+        success: action.payload.success,
       };
     case "REMOVE_CATEGORY":
       return {

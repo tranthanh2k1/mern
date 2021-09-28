@@ -8,7 +8,7 @@ import AddCategoryPage from "./pages/admin/categories/cateParent/add-category";
 import EditCategoryPage from "./pages/admin/categories/cateParent/edit-category";
 import AddProductPage from "./pages/admin/products/add-product";
 import EditProductPage from "./pages/admin/products/edit-product";
-import ListProductPage from "./pages/admin/products/list-product";
+import ListProductPage from "./pages/admin/products";
 import NotFoundPage from "./pages/not-found";
 import LoginPage from "./pages/website/user/Login";
 import RegisterPage from "./pages/website/user/Register";

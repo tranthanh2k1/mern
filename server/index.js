@@ -8,9 +8,6 @@ const bodyParser = require("body-parser");
 const authRoutes = require("./routers/auth.js");
 const categoryRoutes = require("./routers/category.js");
 const productRutes = require("./routers/product.js");
-const colorRoutes = require("./routers/color.js");
-const sizeRoutes = require("./routers/size.js");
-const imgProductRoutes = require("./routers/imgProduct.js");
 
 dotenv.config();
 const app = express();
@@ -37,12 +34,9 @@ app.use(bodyParser.json({ limit: "30mb" }));
 app.use(bodyParser.urlencoded({ extended: true, limit: "30mb" }));
 
 // Routes Middlewares
-app.use("/API", authRoutes);
-app.use("/API", categoryRoutes);
-app.use("/API", productRutes);
-app.use("/API", colorRoutes);
-app.use("/API", sizeRoutes);
-app.use("/API", imgProductRoutes);
+app.use("/api", authRoutes);
+app.use("/api", categoryRoutes);
+app.use("/api", productRutes);
 
 const PORT = process.env.PORT || 5500;
 

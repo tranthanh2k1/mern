@@ -8,6 +8,7 @@ import "./pages/website/user/Login/login.css";
 import "./pages/website/user/Register/register.css";
 import "./layouts/layoutAdmin/layout-admin.css";
 import "./pages/admin/categories/category.css";
+import "./pages/admin/products/product.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import rootReducer from "./redux/reducers";
 import { Provider } from "react-redux";

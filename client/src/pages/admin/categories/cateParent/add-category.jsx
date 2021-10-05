@@ -8,7 +8,7 @@ const AddCategoryPage = () => {
     const { register, handleSubmit, formState: { errors } } = useForm()
     const history = useHistory()
 
-    const categories = useSelector(state => state.listParentCate.listCategory)
+    const categories = useSelector(state => state.listParentCate)
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -21,12 +21,15 @@ const AddCategoryPage = () => {
             parent_id: data.parent_id ? data.parent_id : null
         }
         dispatch(addCategory(dataForm))
-        history.push('/admin/category')
+        if (categories && categories.message) {
+            history.push('/admin/category')
+        }
     }
 
     return (
         <div className="layout-content">
             <div className="layout-content-padding">
+                {categories && <p className="form__error">{categories.error}</p>}
                 <h3>Thêm danh mục</h3>
                 <Link to='/admin/category' className="btn btn-success list-cate">Danh sách danh mục</Link>
                 <form action="" onSubmit={handleSubmit(onSubmit)}>
@@ -43,7 +46,7 @@ const AddCategoryPage = () => {
                         {...register('parent_id')}
                     >
                         <option key="1" value="">--Danh mục cha--</option>
-                        {categories.map((category) => (
+                        {categories.listCategory.map((category) => (
                             <>
                                 <option key={category._id} value={category._id}>{category.name}</option>
                             </>

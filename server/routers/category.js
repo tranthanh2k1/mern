@@ -8,6 +8,7 @@ const {
   update,
   remove,
   read,
+  listChild,
 } = require("../controllers/category");
 
 router.post("/category", create);
@@ -15,6 +16,7 @@ router.get("/categories", list);
 router.get("/category/:id", read);
 router.put("/category/:id", update);
 router.delete("/category/:id", remove);
+router.get("/categories/child", listChild);
 
 router.param("id", categoryId);
 

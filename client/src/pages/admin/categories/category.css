@@ -1,7 +1,7 @@
 .layout-content {
   border: 1px solid #ccc;
   background-color: #fff;
-  height: 100vh;
+  height: auto;
 }
 
 .layout-content-padding {

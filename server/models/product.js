@@ -6,20 +6,21 @@ const productSchema = new Schema(
   {
     name: {
       type: String,
+      unique: true,
       required: true,
     },
     price_default: {
-      type: String,
+      type: Number,
       required: true,
     },
     price_sale: {
-      type: String,
+      type: Number,
     },
     description: {
       type: String,
       default: "",
     },
-    image_default: {
+    image: {
       type: Array,
       default: [],
     },
@@ -31,15 +32,17 @@ const productSchema = new Schema(
       default: true,
     },
     color: {
-      type: String,
+      type: Array,
+      default: [],
     },
     size: {
-      type: String,
+      type: Array,
+      default: [],
     },
     category_id: {
       type: mongoose.Types.ObjectId,
       ref: "Category",
-      required: true,
+      required: false,
     },
   },
   { timestamps: true }

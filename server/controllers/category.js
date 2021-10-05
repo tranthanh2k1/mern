@@ -114,6 +114,28 @@ exports.list = async (req, res) => {
   }
 };
 
+/*
+ * Module này sẽ trả về danh sách danh mục con
+ */
+exports.listChild = async (req, res) => {
+  const listChild = await Category.find({
+    parent_id: { $ne: null },
+  });
+
+  if (!listChild) {
+    return res.status(400).json({
+      success: false,
+      message: "Không tìm thấy danh mục nào",
+    });
+  }
+
+  res.status(200).json({
+    success: true,
+    message: "Lấy danh sách danh mục thành công",
+    listChild,
+  });
+};
+
 exports.read = (req, res) => {
   const category = req.category;
 

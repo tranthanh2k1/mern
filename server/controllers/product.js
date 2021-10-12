@@ -1,5 +1,6 @@
 const Product = require("../models/product.js");
 const _ = require("lodash");
+const { isBuffer } = require("lodash");
 
 exports.productId = (req, res, next, id) => {
   Product.findById(id, (err, product) => {
@@ -138,7 +139,10 @@ exports.update = async (req, res) => {
  * Module này sẽ trả về danh sách sản phẩm
  */
 exports.list = async (req, res) => {
-  const listProduct = await Product.find().populate("category_id", "_id name");
+  const listProduct = await Product.find().populate(
+    "category_id",
+    "_id name parent_id"
+  );
 
   if (!listProduct) {
     return res.status(400).json({
@@ -158,7 +162,10 @@ exports.list = async (req, res) => {
  * Module này sẽ trả về chi tiết sản phẩm
  */
 exports.detail = async (req, res) => {
-  const product = await req.product.populate("category_id", "_id name");
+  const product = await req.product.populate(
+    "category_id",
+    "_id name parent_id"
+  );
 
   res.status(200).json(product);
 };
@@ -210,4 +217,51 @@ exports.getProductSize = (req, res) => {
   const { size } = req.product;
 
   res.status(200).json(size);
+};
+
+/*
+ * Module này sẽ trả về danh sách sản phẩm khuyến mãi
+ */
+exports.getProductSale = (req, res) => {
+  let limit = req.query.limit ? req.query.limit : 4;
+
+  Product.find({ price_sale: { $gt: 0 } })
+    .populate("category_id", "_id name")
+    .limit(limit)
+    .exec((err, product) => {
+      if (err) {
+        return res.status(400).json({
+          success: false,
+          message: "Không tìm thấy sản phẩm nào",
+        });
+      }
+
+      res.status(200).json({
+        success: true,
+        message: "Lấy danh sách sản phẩm khuyến mãi thành công",
+        product,
+      });
+    });
+};
+
+/*
+ * Module này sẽ trả về danh sách sản phẩm theo danh mục con
+ */
+exports.getProductCateChild = async (req, res) => {
+  const { cateId } = req.params;
+
+  Product.find({ category_id: cateId }, (err, product) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: "Không tìm thấy sản phẩm nào",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Lấy danh mục sản phẩm thành công",
+      product,
+    });
+  });
 };

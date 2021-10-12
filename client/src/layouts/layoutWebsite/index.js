@@ -1,4 +1,5 @@
 import React from "react";
+import Footer from "../../components/website/Footer";
 import Header from "../../components/website/Header";
 
 const LayoutWebsite = ({ children }) => {
@@ -6,6 +7,7 @@ const LayoutWebsite = ({ children }) => {
     <div>
       <Header />
       {children}
+      <Footer />
     </div>
   );
 };

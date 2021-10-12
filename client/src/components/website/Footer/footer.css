@@ -1,0 +1,75 @@
+.wp__footer {
+  margin-top: 150px;
+  background-color: #262728;
+  color: #f9f4e3;
+}
+
+.wp__footer-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  padding-top: 60px;
+}
+
+.wp__footer-item {
+  padding: 10px;
+}
+
+.wp__footer-item > ul {
+  padding: 0;
+}
+
+.wp__footer-item > ul > li {
+  list-style: none;
+  line-height: 35px;
+}
+
+.wp__footer-item > ul > li > a {
+  text-decoration: none;
+  display: block;
+  color: #b6b3a8;
+  font-size: 0.9rem;
+}
+
+.footer__icon-logo {
+  width: 120px;
+  height: 45px;
+}
+
+.footer__title {
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.footer__social-network > li {
+  display: inline-block;
+  padding: 10px 7px 10px 0;
+}
+
+.footer__social-network > li > a > img {
+  width: 30px;
+  height: 30px;
+}
+
+.bi-facebook {
+  color: #1877f2;
+}
+
+.bi-youtube {
+  color: #ff0000;
+}
+
+.bi-instagram {
+  color: #f67532;
+}
+
+.bi-envelope-fill {
+  color: #c642a1;
+}
+
+.icon__zalo-flex {
+  position: fixed;
+  top: 560px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+}

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
+import { isAuthenticated } from '../../../../redux/actions/auth'
 import { addCategory, listParentCategory } from '../../../../redux/actions/categories/cateParent'
 
 const AddCategoryPage = () => {
@@ -15,13 +16,15 @@ const AddCategoryPage = () => {
         dispatch(listParentCategory())
     }, [])
 
+    const { token } = isAuthenticated()
+
     const onSubmit = (data) => {
         const dataForm = {
             name: data.name,
             parent_id: data.parent_id ? data.parent_id : null
         }
-        dispatch(addCategory(dataForm))
-        if (categories && categories.message) {
+        dispatch(addCategory(token, dataForm))
+        if (categories && categories.error === '') {
             history.push('/admin/category')
         }
     }

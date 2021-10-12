@@ -17,8 +17,7 @@ const AddProductPage = () => {
     useEffect(() => {
         const getCategory = async () => {
             const { data } = await axios.get(`${API}/categories/child`)
-            const { listChild } = data
-            setCategories(listChild)
+            setCategories(data)
         }
 
         getCategory()
@@ -137,7 +136,7 @@ const AddProductPage = () => {
                         {...register('category_id')}
                     >
                         <option key="1" value="">--Chọn danh mục--</option>
-                        {categories.map((category) => (
+                        {categories && categories.map((category) => (
                             <>
                                 <option key={category._id} value={category._id}>{category.name}</option>
                             </>

@@ -51,7 +51,7 @@ const ListProductPage = () => {
 									<td className="product__admin--name">{product.name}</td>
 									<td><img className="product__admin--image" src={product.image && product.image[0]} alt="anhr" /></td>
 									<td>{convertNumber(product.price_default ? product.price_default : '')}&nbsp;đ</td>
-									<td>{product.price_sale}%</td>
+									<td>{product.price_sale ? product.price_sale : '0'}%</td>
 									<td>{product.quantity}</td>
 									<td>{product.status ? 'Còn hàng' : 'Hết hàng'}</td>
 									<td>

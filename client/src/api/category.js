@@ -36,12 +36,13 @@ export const detail = (id) => {
     .catch((error) => console.log(error));
 };
 
-export const create = (data) => {
+export const create = (token, data) => {
   return fetch(`${API}/category`, {
     method: "POST",
     headers: {
       Accept: "appliaction/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(data),
   })

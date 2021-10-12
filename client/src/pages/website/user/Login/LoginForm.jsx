@@ -1,21 +1,32 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { useForm } from "react-hook-form"
-import { signin } from '../../../../redux/actions/auth'
+import { authenticate, isAuthenticated, signin } from '../../../../redux/actions/auth'
 
 const LoginForm = () => {
     const { register, handleSubmit, formState: { errors } } = useForm()
     const [error, setError] = useState("")
     const [message, setMessage] = useState("")
+    const [redirectToRef, setRedirectToRef] = useState(false)
+
+    const { user } = isAuthenticated()
 
     const onSubmit = (dataForm, e) => {
         signin(dataForm)
             .then(data => {
+                const dataGetItem = {
+                    token: data.token,
+                    user: data.user
+                }
+                console.log(dataGetItem)
                 if (data.success) {
                     e.target.reset()
                     setError("")
                     setMessage(data.message)
                     alert(data.message)
+                    authenticate(dataGetItem, () => {
+                        setRedirectToRef(true)
+                    })
                 } else {
                     setError(data.message)
                     alert(data.message)
@@ -23,10 +34,20 @@ const LoginForm = () => {
             })
     }
 
+    const redirectUser = () => {
+        if (redirectToRef) {
+            if (user.role === 1) {
+                return <Redirect to='/admin' />
+            } else {
+                return <Redirect to='/' />
+            }
+        }
+    }
+
     return (
         <div className="signup">
-            {error}
-            {message}
+            {redirectUser()}
+            {error ? <span className='form__error'>{error}</span> : message}
             <h2 className="signup__heading">Đăng nhập</h2>
             <p className="signin__text">Nếu bán chưa có tài khoản, <Link to="/register" className="signup__link">Đăng ký tại đây</Link></p>
             <form action="" className="signup__form" onSubmit={handleSubmit(onSubmit)}>

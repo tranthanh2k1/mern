@@ -28,7 +28,7 @@ const Footer = () => {
                             <li><Link to="#">Hệ thống cửa hàng</Link></li>
                             <li>
                                 <Link to="#">
-                                    <img className='footer__icon-logo' src="https://yody.vn/img/dathongbaobocongthuong.png" alt="image-footer-info" />
+                                    <img className='footer__icon-logo' src="https://yody.vn/img/dathongbaobocongthuong.png" alt="image footer info" />
                                 </Link>
                             </li>
                         </ul>

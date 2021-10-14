@@ -22,6 +22,7 @@ import ProductCateChildPage from "./pages/website/products/productCateChild";
 import ProductCateParentPage from "./pages/website/products/productCateParent";
 import AdminRouter from "./pages/admin/adminRouter";
 import AdminDashboard from "./pages/admin/dashboard";
+import DetailProductPage from "./pages/website/products/detailProduct";
 
 const Routes = () => {
   return (
@@ -80,6 +81,9 @@ const Routes = () => {
               </Route>
               <Route exact path="/product/cateparent/:id">
                 <ProductCateParentPage />
+              </Route>
+              <Route exact path="/product/detail/:id">
+                <DetailProductPage />
               </Route>
               <Route path="**">
                 <NotFoundPage />

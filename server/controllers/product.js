@@ -265,3 +265,25 @@ exports.getProductCateChild = async (req, res) => {
     });
   });
 };
+
+/*
+ * Module này sẽ trả về sản phẩm liên quan có cùng danh mục
+ */
+exports.listRelated = (req, res) => {
+  Product.find({
+    _id: { $ne: req.product },
+    category_id: req.product.category_id._id,
+  })
+    .limit(4)
+    .populate("category_id", "_id name")
+    .exec((err, product) => {
+      if (err) {
+        return res.status(400).json({
+          succes: false,
+          message: "Không tìm thấy sản phẩm nào",
+        });
+      }
+
+      res.status(200).json(product);
+    });
+};

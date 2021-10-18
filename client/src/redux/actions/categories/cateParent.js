@@ -16,8 +16,8 @@ export const listParentCategory = () => async (dispatch) => {
   }
 };
 
-export const addCategory = (dataForm) => async (dispatch) => {
-  const data = await create(dataForm);
+export const addCategory = (token, dataForm) => async (dispatch) => {
+  const data = await create(token, dataForm);
 
   if (data.success) {
     dispatch({

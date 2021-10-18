@@ -9,7 +9,12 @@ import "./pages/website/user/Register/register.css";
 import "./layouts/layoutAdmin/layout-admin.css";
 import "./pages/admin/categories/category.css";
 import "./pages/admin/products/product.css";
+import "./pages/website/home/home.css";
+import "./pages/website/home/ListProduct/list-product.css";
+import "./components/website/Footer/footer.css";
+import "./pages/website/products/detailProduct/detail-product.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+
 import rootReducer from "./redux/reducers";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";

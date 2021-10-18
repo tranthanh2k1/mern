@@ -129,11 +129,7 @@ exports.listChild = async (req, res) => {
     });
   }
 
-  res.status(200).json({
-    success: true,
-    message: "Lấy danh sách danh mục thành công",
-    listChild,
-  });
+  res.status(200).json(listChild);
 };
 
 exports.read = (req, res) => {
@@ -199,4 +195,10 @@ exports.remove = async (req, res) => {
       categoryRemove,
     });
   });
+};
+
+exports.listAll = async (req, res) => {
+  const listCate = await Category.find().populate("parent_id", "_id name");
+
+  res.status(200).json(listCate);
 };

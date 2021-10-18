@@ -2,7 +2,7 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useHistory } from 'react-router-dom'
 import { API } from '../../../config'
 import firebase from '../../../firebase'
 import { updateProduct } from '../../../redux/actions/products'
@@ -89,6 +89,8 @@ const EditProductPage = () => {
         setSizes(arraySize)
     }
 
+    const history = useHistory()
+
     const onSubmit = (data) => {
         const updateProductData = {
             name: data.name ? data.name : products.name,
@@ -103,6 +105,7 @@ const EditProductPage = () => {
         }
 
         dispatch(updateProduct(updateProductData, id))
+        history.push('/admin/product')
     }
 
     return (
@@ -155,7 +158,7 @@ const EditProductPage = () => {
                             </>
                         ))}
                     </select>
-                    <button type="submit" className="btn btn-primary mt-4 form__add-product">Thêm sản phẩm</button>
+                    <button type="submit" className="btn btn-primary mt-4 form__add-product">Sửa sản phẩm</button>
                 </form>
                 <div className="product-position">
                     <form action="" onSubmit={handleSubmit(onSubmitImage)}>

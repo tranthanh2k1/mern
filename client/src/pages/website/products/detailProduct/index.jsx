@@ -5,12 +5,18 @@ import { Link, NavLink } from 'react-router-dom'
 import HomePolicy from '../../../../components/website/Content/HomePolicy'
 import { API } from '../../../../config'
 import { convertNumber } from '../../../../config'
+import { addCartProduct } from '../../../../redux/actions/cartProduct'
 import ListProduct from '../../home/ListProduct'
+import { v4 } from 'uuid'
+import { useDispatch } from 'react-redux'
 
 const DetailProductPage = () => {
     const [product, setProduct] = useState({})
-    const [quantity, setQuantity] = useState(1)
     const [relatedProduct, setRelateProduct] = useState([])
+    const [qty, setQty] = useState(1)
+
+    const [colorItem, setColorItem] = useState('')
+    const [sizeItem, setSizeItem] = useState('')
 
     const { id } = useParams()
 
@@ -43,15 +49,47 @@ const DetailProductPage = () => {
     }
 
     const decreaseQuantity = () => {
-        if (1 >= quantity) return
+        if (1 >= qty) return
 
-        setQuantity(quantity - 1)
+        setQty(qty - 1)
     }
 
     const increaseQuantity = () => {
-        if (product.quantity <= quantity) return
+        if (product.quantity <= qty) return
 
-        setQuantity(quantity + 1)
+        setQty(qty + 1)
+    }
+
+    const onClickColor = (colorClick) => {
+        setColorItem(colorClick)
+    }
+
+    const onClickSize = (sizeColor) => {
+        setSizeItem(sizeColor)
+    }
+
+    const dispatch = useDispatch()
+
+    // add to cart
+    const handleAddToCart = () => {
+        if (colorItem === '' || sizeItem === '') {
+            return alert("Bạn cần chọn màu và kích cỡ của sản phẩm")
+        }
+
+        const dataAddToCartProduct = {
+            idProduct: v4(),
+            name: product.name + ' - ' + colorItem + ' - ' + sizeItem,
+            price: product.price_sale > 1 ? converPriceSale(product.price_sale, product.price_default) : product.price_default,
+            qty,
+            image: product.image && product.image[0],
+            category_id: product.category_id
+        }
+
+        dispatch(addCartProduct(dataAddToCartProduct))
+
+        setQty(1)
+        setColorItem('')
+        setSizeItem('')
     }
 
     return (
@@ -90,25 +128,29 @@ const DetailProductPage = () => {
                                     </span>)}
                             </div>
                         </div>
-                        <div className="product__privew-property">Màu sắc</div>
+                        <div className="product__privew-property">Màu sắc: {colorItem}</div>
                         <div className="product__privew-color-item">
                             {product.color && product.color.map((item, index) => (
-                                <Link to="#"><div className='product-detail-color-item' key={index} style={{ backgroundColor: `${item}` }}></div></Link>
+                                <Link to="#" key={index} onClick={() => onClickColor(item)}>
+                                    <div className='product-detail-color-item' style={{ backgroundColor: `${item}` }}></div>
+                                </Link>
                             ))}
                         </div>
-                        <div className="product__privew-property">Kích cỡ</div>
+                        <div className="product__privew-property">Kích cỡ: {sizeItem}</div>
                         <div className="product__privew-size-item">
                             {product.size && product.size.map((item, index) => (
-                                <Link to="#"><div className='product-detail-size-item' key={index}>{item}</div></Link>
+                                <Link to="#" key={index} onClick={() => onClickSize(item)}>
+                                    <div className='product-detail-size-item' >{item}</div>
+                                </Link>
                             ))}
                         </div>
                         <div className='product__quantity-detail'>
                             <label>Số lượng:</label>
                             <span onClick={decreaseQuantity}><i class="bi bi-dash-lg"></i></span>
-                            <input type="text" readOnly value={quantity} className='input-quantity-detail' />
+                            <input type="text" readOnly value={qty} className='input-quantity-detail' />
                             <span onClick={increaseQuantity}><i class="bi bi-plus-lg"></i></span>
                         </div>
-                        <div className="product__button-detail button-add-to-cart"><Link to="#">Thêm giỏ hàng</Link></div>
+                        <div className="product__button-detail button-add-to-cart" onClick={() => handleAddToCart(product._id)}><Link to="#">Thêm giỏ hàng</Link></div>
                         <div className="product__button-detail button-buy"><Link to="#">Mua ngay</Link></div>
                     </div>
                 </div>

@@ -14,6 +14,7 @@ import "./pages/website/home/ListProduct/list-product.css";
 import "./components/website/Footer/footer.css";
 import "./pages/website/products/detailProduct/detail-product.css";
 import "./pages/website/cart/cart.css";
+import "./pages/website/products/searchProduct/search-product.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import rootReducer from "./redux/reducers";

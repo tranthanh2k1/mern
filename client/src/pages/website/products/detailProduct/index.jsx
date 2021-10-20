@@ -81,6 +81,7 @@ const DetailProductPage = () => {
             name: product.name + ' - ' + colorItem + ' - ' + sizeItem,
             price: product.price_sale > 1 ? converPriceSale(product.price_sale, product.price_default) : product.price_default,
             qty,
+            price_default: product.price_default,
             image: product.image && product.image[0],
             category_id: product.category_id
         }

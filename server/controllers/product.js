@@ -287,3 +287,27 @@ exports.listRelated = (req, res) => {
       res.status(200).json(product);
     });
 };
+
+/*
+ * Module này sẽ trả về sản phẩm đc tìm kiếm theo tên
+ */
+exports.searchProduct = (req, res) => {
+  const searchProduct = req.query.name;
+
+  Product.find({ name: { $regex: searchProduct, $options: "i" } }).exec(
+    (err, product) => {
+      if (err) {
+        return res.status(400).json({
+          success: false,
+          message: "Không tìm thấy sản phẩm",
+        });
+      }
+
+      res.status(200).json({
+        success: true,
+        message: "Tìm kiếm sản phẩm thành công",
+        product,
+      });
+    }
+  );
+};

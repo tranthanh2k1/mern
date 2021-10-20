@@ -47,7 +47,7 @@ const CartProductPage = () => {
                                     </div>
                                     <div className="cart__item-price">
                                         <p className='cart__item-price-buy'>{convertNumber(item.price)}</p>
-                                        <p className='cart__item-price-default'>{convertNumber(item.price)}</p>
+                                        <p className='cart__item-price-default'>{convertNumber(item.price_default)}</p>
                                     </div>
                                     <div className="cart__item-quantity">
                                         <span onClick={() => decreaseQuantity(item.name, item.qty)}><i class="bi bi-dash-lg"></i></span>
@@ -68,7 +68,7 @@ const CartProductPage = () => {
                             </div>
                             <div className='cart__button'>
                                 <Link to="#" className="cart__order-button">
-                                    Tiền hành đặt hàng
+                                    Tiến hành đặt hàng
                                 </Link>
                                 <Link to="/" className="cart__keep-buy-button">
                                     Tiếp tục mua hàng

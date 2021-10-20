@@ -68,9 +68,9 @@ const Header = () => {
                     <Link to="/">
                         <img className="w-header-logo" src="https://storage.googleapis.com/cdn.nhanh.vn/store/3138/logo_1615426885_logo-yody.png" alt="logo" />
                     </Link>
-                    <form action="" className="w-header-form-search">
+                    <form action="/search" className="w-header-form-search">
                         <div>
-                            <input type="text" placeholder="Tìm kiếm sản phẩm" />
+                            <input type="text" placeholder="Tìm kiếm sản phẩm" name="name" />
                         </div>
                         <button><i className="bi bi-search"></i></button>
                     </form>

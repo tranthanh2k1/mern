@@ -24,6 +24,7 @@ import AdminRouter from "./pages/admin/adminRouter";
 import AdminDashboard from "./pages/admin/dashboard";
 import DetailProductPage from "./pages/website/products/detailProduct";
 import CartProductPage from "./pages/website/cart";
+import SearchProduct from "./pages/website/products/searchProduct";
 
 const Routes = () => {
   return (
@@ -85,6 +86,9 @@ const Routes = () => {
               </Route>
               <Route exact path="/product/detail/:id">
                 <DetailProductPage />
+              </Route>
+              <Route exact path="/search">
+                <SearchProduct />
               </Route>
               <Route exact path="/cart">
                 <CartProductPage />

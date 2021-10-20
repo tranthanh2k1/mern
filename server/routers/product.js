@@ -14,6 +14,7 @@ const {
   getProductSale,
   getProductCateChild,
   listRelated,
+  searchProduct,
 } = require("../controllers/product");
 
 router.post("/product", create);
@@ -33,6 +34,9 @@ router.get("/product/:id/size", getProductSize);
 
 // get products listRelate
 router.get("/products/related/:id", listRelated);
+
+// search product
+router.get("/products/search", searchProduct);
 
 router.param("id", productId);
 

@@ -32,7 +32,7 @@ const CartProductPage = () => {
     }
 
     return (
-        <div>
+        <div className='content-cart'>
             <div className="container">
                 <div className='breadcrumb'>Trang chủ &gt;&#160; <span style={{ color: '#fcaf4f' }}>Giỏ hàng</span></div>
                 {reRenderTotalQuantity > 0 ? (
@@ -40,7 +40,7 @@ const CartProductPage = () => {
                         <div className="cart__left">
                             {cartProduct.map((item, index) => (
                                 <div className='cart__item' key={index}>
-                                    <img src={item.image} alt="image cart product item" className="cart__item-image" />
+                                    <img src={item.image} alt="cart product item" className="cart__item-image" />
                                     <div className="cart__item-info">
                                         <p className='cart__item-name'>{item.name}</p>
                                         <Link to="#" onClick={() => removeCartItem(item.name)} className='cart_item-remove'>Xóa</Link>
@@ -67,7 +67,7 @@ const CartProductPage = () => {
                                 <span>Đơn hàng của bạn được freeship</span>
                             </div>
                             <div className='cart__button'>
-                                <Link to="#" className="cart__order-button">
+                                <Link to="/cart/checkout" className="cart__order-button">
                                     Tiến hành đặt hàng
                                 </Link>
                                 <Link to="/" className="cart__keep-buy-button">

@@ -100,11 +100,11 @@ const DetailProductPage = () => {
                 <div className='product__detail'>
                     <div className="product__detail-image">
                         <div className="product__detail-image-main">
-                            <img src={product.image && product.image[0]} alt="image main" />
+                            <img src={product.image && product.image[0]} alt="main" />
                         </div>
                         <div className="product__detail-image-other">
                             {product.image && product.image.map((item, index) => (
-                                <img key={index} src={item} alt="image other" />
+                                <img key={index} src={item} alt="other" />
                             ))}
                         </div>
                     </div>

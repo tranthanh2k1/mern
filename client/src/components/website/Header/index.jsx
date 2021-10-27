@@ -47,7 +47,6 @@ const Header = () => {
     }, [cartProduct, totalQuantity])
 
     const removeCartItem = (idCartItem) => {
-        // const productItem = cartProduct.find(item => item.name === idCartItem)
         dispatch(removeCartProdutItem(idCartItem))
     }
 
@@ -123,7 +122,7 @@ const Header = () => {
                                     </div>
                                     <div className="header__cart-btn">
                                         <Link to="/cart" ><button className='cart-button'>Giỏ hàng</button></Link>
-                                        <Link to="#"><button className='payment-button'>Thanh toán</button></Link>
+                                        <Link to="/cart/checkout"><button className='payment-button'>Thanh toán</button></Link>
                                     </div>
                                 </div>
                             )}

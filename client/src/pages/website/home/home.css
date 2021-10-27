@@ -305,6 +305,12 @@
   background-color: #eeeeee;
   height: 50px;
 }
+
+ul.header__menu-main {
+  padding: 0;
+  margin-left: -10px;
+}
+
 ul.header__menu-main > li {
   list-style: none;
   display: inline-block;

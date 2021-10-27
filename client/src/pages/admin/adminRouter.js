@@ -9,7 +9,7 @@ const AdminRouter = ({ children }) => {
         return isAuthenticated() && isAuthenticated().user.role === 1 ? (
           children
         ) : (
-          <Redirect to={{ pathname: "/register" }} />
+          <Redirect to={{ pathname: "/login" }} />
         );
       }}
     />

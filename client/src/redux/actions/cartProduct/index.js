@@ -43,3 +43,9 @@ export const decrease = (item) => (dispatch) => {
     payload: item,
   });
 };
+
+export const removeAllCartProduct = () => {
+  return {
+    type: "REMOVE_ALL_CART_PRODUCT",
+  };
+};

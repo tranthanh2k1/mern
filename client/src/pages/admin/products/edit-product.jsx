@@ -2,7 +2,7 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
-import { Link, useParams, useHistory } from 'react-router-dom'
+import { Link, useParams, useHistory, useLocation } from 'react-router-dom'
 import { API } from '../../../config'
 import firebase from '../../../firebase'
 import { updateProduct } from '../../../redux/actions/products'
@@ -18,24 +18,59 @@ const EditProductPage = () => {
 
     const dispatch = useDispatch()
 
-    const { id } = useParams()
+    // get params id url
+    const { pathname } = useLocation()
+    const arrayPathname = pathname.split("/")
+    const id = arrayPathname[arrayPathname.length - 1]
+
+    // const { id } = useParams()
 
     useEffect(() => {
         const getProduct = async () => {
             const { data } = await axios.get(`${API}/product/${id}`)
+
             setProducts(data)
 
-            const dataImage = await axios.get(`${API}/product/${id}/image`)
-            setImages(dataImage.data);
+        }
 
-            const dataColor = await axios.get(`${API}/product/${id}/color`)
-            setColors(dataColor.data)
+        getProduct()
+    }, [])
 
-            const dataSize = await axios.get(`${API}/product/${id}/size`)
-            setSizes(dataSize.data)
+    useEffect(() => {
+        const getProduct = async () => {
+            const { data } = await axios.get(`${API}/product/${id}/image`)
 
-            const dataCate = await axios.get(`${API}/categories/child`)
-            setCategories(dataCate.data.listChild)
+            setImages(data);
+        }
+
+        getProduct()
+    }, [])
+
+    useEffect(() => {
+        const getProduct = async () => {
+            const { data } = await axios.get(`${API}/product/${id}/color`)
+
+            setColors(data)
+        }
+
+        getProduct()
+    }, [])
+
+    useEffect(() => {
+        const getProduct = async () => {
+            const { data } = await axios.get(`${API}/product/${id}/size`)
+
+            setSizes(data)
+        }
+
+        getProduct()
+    }, [])
+
+    useEffect(() => {
+        const getProduct = async () => {
+            const { data } = await axios.get(`${API}/categories/child`)
+
+            setCategories(data)
         }
 
         getProduct()

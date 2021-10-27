@@ -25,6 +25,7 @@ import AdminDashboard from "./pages/admin/dashboard";
 import DetailProductPage from "./pages/website/products/detailProduct";
 import CartProductPage from "./pages/website/cart";
 import SearchProduct from "./pages/website/products/searchProduct";
+import CheckoutPage from "./pages/website/order";
 
 const Routes = () => {
   return (
@@ -92,6 +93,9 @@ const Routes = () => {
               </Route>
               <Route exact path="/cart">
                 <CartProductPage />
+              </Route>
+              <Route exact path="/cart/checkout">
+                <CheckoutPage />
               </Route>
               <Route path="**">
                 <NotFoundPage />

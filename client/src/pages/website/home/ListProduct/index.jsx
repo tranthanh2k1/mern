@@ -14,7 +14,7 @@ const ListProduct = ({ products }) => {
                     {products.map(product => (
                         <div className="wp__list-product-item" key={product._id}>
                             <Link to={`/product/detail/${product._id}`} className="product_item-img-focus">
-                                <img className="product__item-img-hover" src={product.image && product.image[0]} alt="image product" />
+                                <img className="product__item-img-hover" src={product.image && product.image[0]} alt="product" />
                                 <div className="product__item-action">
                                     <Link to={`/product/detail/${product._id}`}>Xem chi tiết<i className="bi bi-eye"></i></Link>
                                     <Link to="#">Mua ngay<i className="bi bi-cart3"></i></Link>

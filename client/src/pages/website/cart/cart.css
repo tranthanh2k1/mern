@@ -1,3 +1,7 @@
+.content-cart {
+  min-height: 280px;
+}
+
 .cart {
   display: grid;
   grid-template-columns: 2fr 1fr;

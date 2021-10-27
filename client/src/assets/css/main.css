@@ -29,6 +29,16 @@ html {
   margin: 3px 0 0 5px;
 }
 
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  background: #e6e6e6;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #c4c4c4;
+}
+
 /* description: có dùng lại cho phần sau */
 /* .container {
   width: 1200px;

@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { Link, useHistory, useLocation } from 'react-router-dom'
 import MenuMain from './MenuMain'
 import { isAuthenticated } from '../../../redux/actions/auth'
+import { useDispatch, useSelector } from 'react-redux'
+import { getCartProduct, removeCartProdutItem, saveCartProduct } from '../../../redux/actions/cartProduct'
+import { convertNumber } from '../../../config'
 
 const Header = () => {
     const [isLogged, setIsLogged] = useState(false)
@@ -22,6 +25,32 @@ const Header = () => {
         next()
     }
 
+    // cart
+    const { cartProduct, totalQuantity } = useSelector(state => state.cartProduct)
+
+    const reRenderTotalQuantity = cartProduct.reduce((acc, item) => {
+        return acc + item.qty
+    }, 0)
+
+    const totalMoney = cartProduct.reduce((acc, item) => {
+        return acc + (item.price * item.qty)
+    }, 0)
+
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(getCartProduct())
+    }, [])
+
+    useEffect(() => {
+        dispatch(saveCartProduct())
+    }, [cartProduct, totalQuantity])
+
+    const removeCartItem = (idCartItem) => {
+        // const productItem = cartProduct.find(item => item.name === idCartItem)
+        dispatch(removeCartProdutItem(idCartItem))
+    }
+
     return (
         <div className="full-width w-header">
             <div className="container">
@@ -39,9 +68,9 @@ const Header = () => {
                     <Link to="/">
                         <img className="w-header-logo" src="https://storage.googleapis.com/cdn.nhanh.vn/store/3138/logo_1615426885_logo-yody.png" alt="logo" />
                     </Link>
-                    <form action="" className="w-header-form-search">
+                    <form action="/search" className="w-header-form-search">
                         <div>
-                            <input type="text" placeholder="Tìm kiếm sản phẩm" />
+                            <input type="text" placeholder="Tìm kiếm sản phẩm" name="name" />
                         </div>
                         <button><i className="bi bi-search"></i></button>
                     </form>
@@ -69,8 +98,35 @@ const Header = () => {
                         <div className="w-header-main-cart">
                             <i className="bi bi-cart3"></i>
                             <div className="div-separate"></div>
-                            <span>0 Sản phẩm</span>
+                            <span>{reRenderTotalQuantity} Sản phẩm</span>
                             <i className="bi bi-caret-down"></i>
+
+                            {reRenderTotalQuantity === 0 ? (<div className='w-header-cart-empty'>Giỏ hàng của bạn trống</div>) : ''}
+
+                            {reRenderTotalQuantity > 0 && (
+                                <div className="header__cart">
+                                    <div className="wrapper-header-cart">
+                                        {cartProduct && cartProduct.map((item, index) => (
+                                            <div className="header__cart-item" key={index}>
+                                                <img src={item.image} alt="" />
+                                                <div className="header__cart-item-info">
+                                                    <p className='header__cart-item-name'>{item.name} x{item.qty}</p>
+                                                    <p className='header__cart-item-price'>{convertNumber(item.price)}Đ</p>
+                                                </div>
+                                                <i class="bi bi-x-circle-fill" onClick={() => removeCartItem(item.name)}></i>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <div className='header__cart-into-money'>
+                                        <span className='into-money'>Thành tiền</span>
+                                        <span className='total-money'>{convertNumber(totalMoney)}Đ</span>
+                                    </div>
+                                    <div className="header__cart-btn">
+                                        <Link to="/cart" ><button className='cart-button'>Giỏ hàng</button></Link>
+                                        <Link to="#"><button className='payment-button'>Thanh toán</button></Link>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

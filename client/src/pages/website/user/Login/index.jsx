@@ -3,10 +3,12 @@ import LoginForm from './LoginForm'
 
 const LoginPage = () => {
     return (
-        <div className="full-width full-bg">
+        <div className="full-width background-account">
             <div className="container">
                 <div className="grid-col-2 mt-30">
-                    <div>col-1</div>
+                    <div className='content-user'>
+                        <img src="https://storage.googleapis.com/cdn.nhanh.vn/website/template/538/contentKey/6941/lo_g0yody.png" alt="logo content" />
+                    </div>
                     <div className="form__center">
                         <LoginForm />
                     </div>

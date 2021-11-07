@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, Redirect, useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { isAuthenticated } from '../../../redux/actions/auth'
@@ -32,15 +32,15 @@ const CheckoutPage = () => {
         return acc + (item.price_default - item.price)
     }, 0)
 
+    const history = useHistory()
+
     const checkProductCart = () => {
         if (totalMoney && totalMoney === 0) {
-            return <Redirect to="/" />
+            return <Redirect to='/' />
         }
     }
 
     const { user } = isAuthenticated()
-
-    const history = useHistory()
 
     const dispatch = useDispatch()
 
@@ -75,10 +75,10 @@ const CheckoutPage = () => {
     return (
         <div className='checkout'>
             <div className="container">
-                {checkProductCart()}
                 <div className='breadcrumb'>Trang chủ &gt;&#160; <span style={{ color: '#fcaf4f' }}>Thanh toán</span></div>
                 <div className="grid-col-2">
                     <div className="checkout__main">
+                        {checkProductCart()}
                         <h4>Thông tin giao hàng</h4>
                         {!isAuthenticated() && (
                             <div className="remind-login">

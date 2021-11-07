@@ -33,12 +33,12 @@ exports.create = async (req, res) => {
     category_id,
   } = req.body;
 
-  if (!name || !price_default || !image || !color || !size || !category_id) {
-    return res.status(400).json({
-      success: false,
-      message: "Bạn cần nhập đầy đủ thông tin",
-    });
-  }
+  // if (!name || !price_default || !image || !color || !size || !category_id) {
+  //   return res.status(400).json({
+  //     success: false,
+  //     message: "Bạn cần nhập đầy đủ thông tin",
+  //   });
+  // }
 
   const nameUnique = await Product.findOne({ name });
 

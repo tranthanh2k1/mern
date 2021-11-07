@@ -81,6 +81,12 @@ const cartReducer = (state = initialState, action) => {
         ...state,
         cartProduct: [...state.cartProduct],
       };
+    case "REMOVE_ALL_CART_PRODUCT":
+      return {
+        ...state,
+        cartProduct: [],
+        totalQuantity: 0,
+      };
     default:
       return state;
   }

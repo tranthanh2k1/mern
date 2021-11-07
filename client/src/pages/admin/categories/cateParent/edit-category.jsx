@@ -11,7 +11,9 @@ const EditCategoryPage = () => {
     const { register, handleSubmit, formState: { errors } } = useForm()
 
     const history = useHistory()
+    console.log("pẩm", useParams())
     const { id } = useParams()
+    console.log("id", id)
 
     useEffect(() => {
         const getCateId = async () => {
@@ -23,8 +25,10 @@ const EditCategoryPage = () => {
     }, [])
 
     const categories = useSelector(state => state.listParentCate.listCategory)
+    console.log("cate", categories)
 
-    const valueSelect = categories.find(category => category._id === cate.parent_id)
+    const valueSelect = categories && categories.find(category => category._id === cate.parent_id)
+    console.log("value", valueSelect)
 
     const dispatch = useDispatch()
 
@@ -55,8 +59,8 @@ const EditCategoryPage = () => {
                         name="parent_id"
                         {...register("parent_id")}
                     >
-                        {cate.parent_id == null ? (<option key="1" value="">--Danh mục cha--</option>)
-                            : (<option key={valueSelect._id} selected value={valueSelect._id}>{valueSelect.name}</option>)
+                        {cate.parent_id && cate.parent_id == null ? (<option key="1" value="">--Danh mục cha--</option>)
+                            : (<option key={valueSelect._id && valueSelect._id} selected value={valueSelect._id && valueSelect._id}>{valueSelect.name && valueSelect.name}</option>)
                         }
                         {categories.map((category) => (
                             <>

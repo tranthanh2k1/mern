@@ -18,7 +18,6 @@ const LoginForm = () => {
                     token: data.token,
                     user: data.user
                 }
-                console.log(dataGetItem)
                 if (data.success) {
                     e.target.reset()
                     setError("")

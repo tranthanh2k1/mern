@@ -85,7 +85,7 @@ const Header = () => {
                                     <Link to="" onClick={() => signout(() => {
                                         setIsLogged(false)
                                         history.push('/')
-                                    })} className="mx-2">Đăng suất</Link>
+                                    })} className="mx-2">Đăng xuất</Link>
                                 </div>)
                                 :
                                 (<div className="w-header-account-unlogin">

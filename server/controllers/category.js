@@ -143,25 +143,20 @@ exports.read = (req, res) => {
 };
 
 exports.update = async (req, res) => {
-  const category = req.category;
+  const cateOld = req.category;
+
   const { name, parent_id } = req.body;
 
-  if (!name) {
-    return res.status(400).json({
-      success: false,
-      message: "Bạn cần nhập đầy đủ thông tin",
-    });
-  }
-
-  const newCategory = {
-    name: name ? name : category.name,
-    parent_id: parent_id ? parent_id : null,
+  let updatedCate = {
+    name,
+    parent_id: parent_id === "null" ? null : parent_id,
   };
 
-  let newCate = _.assignIn(category, newCategory);
+  updatedCate = _.assignIn(cateOld, updatedCate);
 
-  await newCate.save((err, updateCategory) => {
+  await updatedCate.save((err, category) => {
     if (err) {
+      console.log("error", err);
       return res.status(400).json({
         success: false,
         message: "Update danh mục không thành công",
@@ -171,15 +166,46 @@ exports.update = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Update danh mục thành công",
-      updateCategory,
+      category,
     });
   });
+
+  // if (!name) {
+  //   return res.status(400).json({
+  //     success: false,
+  //     message: "Bạn cần nhập đầy đủ thông tin",
+  //   });
+  // }
+
+  // let updatedCategory = {
+  //   name,
+  //   parent_id: parent_id || null,
+  // };
+
+  // const categoryUpdateCondition = { _id: req.params.id };
+
+  // updatedCategory = await Category.findOneAndUpdate(
+  //   categoryUpdateCondition,
+  //   updatedCategory,
+  //   { new: true }
+  // );
+
+  // if (!updatedCategory) {
+  //   return res.status(401).json({
+  //     success: false,
+  //     message: "Update danh mục không thành công",
+  //   });
+  // }
+
+  // res.status(200).json({
+  //   success: true,
+  //   message: "Update danh mục thành công",
+  //   updatedCategory,
+  // });
 };
 
 exports.remove = async (req, res) => {
   const category = req.category;
-
-  const dltcate = await Category.find();
 
   await category.remove((err, categoryRemove) => {
     if (err) {

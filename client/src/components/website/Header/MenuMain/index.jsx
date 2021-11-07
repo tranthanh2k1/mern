@@ -40,7 +40,12 @@ const MenuMain = () => {
                         <li><NavLink to="/" exact activeStyle={{ color: '#fcaf4f' }}>TRANG CHỦ</NavLink></li>
                         {cateParent && cateParent.map(cate => (
                             <li key={cate._id} className="header__menu-cate">
-                                <NavLink to={`/product/cateparent/${cate._id}`} exact activeStyle={{ color: '#fcaf4f' }} onMouseOver={() => onMouseOverHover(cate._id)}>
+                                <NavLink
+                                    to={`/product/cateparent/${cate._id}`}
+                                    exact
+                                    activeStyle={{ color: '#fcaf4f' }}
+                                    onMouseOver={() => onMouseOverHover(cate._id)}
+                                >
                                     {cate.name}
                                 </NavLink>
                                 <ul className="header__submenu">

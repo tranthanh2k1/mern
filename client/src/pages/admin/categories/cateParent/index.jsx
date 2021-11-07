@@ -42,7 +42,7 @@ const ListCategoryPage = () => {
                                 <tr key={index}>
                                     <th scope="row">{index}</th>
                                     <td>{category.name}</td>
-                                    <td>{category.parent_id == null ? "parent" : "child"}</td>
+                                    <td>{category.parent_id === null ? "parent" : "child"}</td>
                                     <td>
                                         <Link to={`/admin/category/edit/${category._id}`} className="btn btn-primary mx-1">Sửa</Link>
                                         <button onClick={() => removeCate(category._id)} className="btn btn-danger mx-2">Xóa</button>

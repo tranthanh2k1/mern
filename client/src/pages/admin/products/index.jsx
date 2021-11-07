@@ -68,7 +68,6 @@ const ListProductPage = () => {
 									<td>
 										<Link to={`/admin/product/edit/${product._id}`} className="btn btn-primary mx-1">Sửa</Link>
 										<button onClick={() => onHandleRemove(product._id)} className="btn btn-danger">Xóa</button>
-										<Link to={`/admin/product/edit/${product._id}`} className="btn btn-primary mx-1">Chi tiết</Link>
 									</td>
 								</tr>
 							)

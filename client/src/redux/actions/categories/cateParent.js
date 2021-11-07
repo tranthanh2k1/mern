@@ -53,12 +53,14 @@ export const removeCategory = (id) => async (dispatch) => {
 };
 
 export const updateCategory = (dataForm, id) => async (dispatch) => {
+  console.log("action", dataForm, id);
   const data = await update(dataForm, id);
+  console.log("apiaction", data);
 
   if (data.success) {
     dispatch({
       type: "UPDATE_CATEGORY",
-      payload: data.updateCategory,
+      payload: data.category,
     });
   } else {
     dispatch({

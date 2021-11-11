@@ -18,7 +18,13 @@ const orderSchema = new Schema(
     },
     status: {
       type: String,
-      enum: ["WAIT PROGRESS", "DELIVERY", "RECEIVED", "CANCELLED"],
+      enum: [
+        "WAIT FOR CONFIRMATION",
+        "WAIT FOR THE GOODS",
+        "DELIVERING",
+        "RECEIVED",
+        "CANCELLED",
+      ],
     },
     paymentMethod: {
       type: String,

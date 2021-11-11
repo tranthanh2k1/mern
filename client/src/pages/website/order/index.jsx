@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Link, Redirect, useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { isAuthenticated } from '../../../redux/actions/auth'
@@ -13,10 +13,11 @@ const CheckoutPage = () => {
 
     const [values, setvalues] = useState({
         username: '',
+        email: '',
         phone: '',
         address: ''
     })
-    const { username, phone, address } = values
+    const { username, email, phone, address } = values
 
     const handleChange = (name) => (e) => {
         setvalues({ ...values, [name]: e.target.value })
@@ -56,6 +57,7 @@ const CheckoutPage = () => {
 
         const dataOrder = {
             username,
+            email,
             phone,
             address,
             paymentMethod: checked,
@@ -95,6 +97,15 @@ const CheckoutPage = () => {
                                     className='checkout__form-input'
                                     value={username}
                                     onChange={handleChange("username")}
+                                />
+                            </div>
+                            <div className='checkout__form-group'>
+                                <input
+                                    type="email"
+                                    placeholder='Email'
+                                    className='checkout__form-input'
+                                    value={email}
+                                    onChange={handleChange("email")}
                                 />
                             </div>
                             <div className='checkout__form-group'>

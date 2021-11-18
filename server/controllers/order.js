@@ -20,9 +20,9 @@ exports.saveOrder = async (req, res) => {
     email,
     address,
     phone,
-    status: "WAIT FOR CONFIRMATION",
     paymentMethod,
     intoMoney,
+    status: "PROCESSING",
     user_id,
   });
 
@@ -95,4 +95,135 @@ exports.saveOrder = async (req, res) => {
     success: true,
     message: "Bạn đã đặt hàng thành công",
   });
+};
+
+exports.listAllOrder = (req, res) => {
+  Order.find()
+    .sort({ _id: -1 })
+    .exec((err, listOrder) => {
+      if (err) {
+        return res.status(400).json({
+          success: false,
+          message: "Không tìm thấy đơn hàng nào",
+        });
+      }
+
+      res.status(200).json({
+        success: true,
+        message: "Lấy chi tiết đơn hàng thành công",
+        listOrder,
+      });
+    });
+};
+
+exports.orderDetail = async (req, res) => {
+  const orderId = req.params.orderId;
+
+  const infoOrder = await Order.findOne({ _id: orderId });
+
+  CartProduct.find({ order_id: orderId }).exec((err, detailOrder) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: "Không tìm thấy đơn hàng nào",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Lấy chi tiết đơn hàng thành công",
+      detailOrder,
+      infoOrder,
+    });
+  });
+};
+
+exports.updateStatusOrderAdmin = async (req, res) => {
+  const orderId = req.params.orderId;
+
+  const { status } = req.body;
+
+  let updatedStatusOrder;
+
+  const getStatusDB = await Order.findOne({ _id: orderId });
+
+  switch (status) {
+    case "PROCESSING":
+      return res.status(401).json({
+        success: false,
+        message: "Không thể update status này",
+      });
+    case "DELIVERING":
+      if (getStatusDB.status === "PROCESSING") {
+        updatedStatusOrder = {
+          status,
+          updated_delivering: Date.now(),
+        };
+
+        updatedStatusOrder = await Order.findOneAndUpdate(
+          { _id: orderId },
+          updatedStatusOrder,
+          { new: true }
+        );
+
+        if (!updatedStatusOrder) {
+          return res.status(401).json({
+            success: false,
+            message: "Update status đơn hàng không thành công",
+          });
+        }
+
+        res.status(200).json({
+          success: true,
+          message: "Update status đơn hàng thành công",
+          updatedStatusOrder,
+        });
+      } else {
+        return res.status(401).json({
+          success: false,
+          message: "Không thể update status này",
+        });
+      }
+    case "RECEIVED":
+      if (getStatusDB.status === "DELIVERING") {
+        updatedStatusOrder = {
+          status,
+          updated_received: Date.now(),
+        };
+
+        updatedStatusOrder = await Order.findOneAndUpdate(
+          { _id: orderId },
+          updatedStatusOrder,
+          { new: true }
+        );
+
+        if (!updatedStatusOrder) {
+          return res.status(401).json({
+            success: false,
+            message: "Update status đơn hàng không thành công",
+          });
+        }
+
+        res.status(200).json({
+          success: true,
+          message: "Update status đơn hàng thành công",
+          updatedStatusOrder,
+        });
+      } else {
+        return res.status(401).json({
+          success: false,
+          message: "Không thể update status này",
+        });
+      }
+    case "CANCELLED":
+      return res.status(401).json({
+        success: false,
+        message: "Không thể update status này",
+      });
+    default:
+      return res.status(400).json({
+        success: false,
+        message: "Không tìm thấy status nào khớp với đơn hàng",
+      });
+  }
 };

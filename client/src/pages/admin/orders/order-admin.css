@@ -1,0 +1,52 @@
+.order-status-admin {
+  width: 100px;
+  border-radius: 15px;
+  color: #fff;
+  text-align: center;
+  padding: 4px 5px;
+  font-size: 0.9rem;
+  margin-left: 25px;
+}
+
+.admin__order-titile-page {
+  font-weight: bold;
+}
+
+.admin__order {
+  padding: 20px 0;
+}
+
+.admin__order-heading {
+  padding-top: 10px;
+  padding-bottom: 20px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.admin__order-bill p {
+  font-size: 1.1rem;
+}
+
+.span-content-order {
+  font-size: 1rem;
+}
+
+.admin__order-status-now {
+  background-color: #0984e3;
+  color: #fff;
+  text-transform: lowercase;
+  padding: 3px 6px;
+  border-radius: 5px;
+  font-size: 0.9rem;
+}
+
+.btn-order-status {
+  border: none;
+  border-radius: 10px;
+  padding: 5px 10px;
+  margin-bottom: 20px;
+}
+
+.btn-status-ml {
+  margin-left: 30px;
+}

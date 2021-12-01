@@ -4,6 +4,9 @@ const Schema = mongoose.Schema;
 
 const orderSchema = new Schema(
   {
+    code_bill: {
+      type: String,
+    },
     username: {
       type: String,
       required: true,
@@ -22,6 +25,11 @@ const orderSchema = new Schema(
     paymentMethod: {
       type: String,
       required: true,
+    },
+    paymentStatus: {
+      type: String,
+      enum: ["unpaid", "paid"],
+      default: "unpaid",
     },
     intoMoney: {
       type: Number,

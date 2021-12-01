@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
+import Moment from 'react-moment';
 import { Link, useHistory, useLocation } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { adminUpdateStatusOrderAction, getOrderDetailAction } from '../../../redux/actions/orderAdmin'
@@ -22,18 +23,20 @@ const DetailOrderPage = () => {
 
     useEffect(() => {
         dispatch(getOrderDetailAction(id))
-    }, [])
+    }, [pathname])
 
     useEffect(() => {
         const checkStatus = () => {
             if (orderDetail && orderDetail.infoOrder.status === 'PROCESSING') {
                 setIsDisableProcessing('')
                 setIsDisableDelivering('')
+                setIsDisableCelled('')
             }
 
             if (orderDetail && orderDetail.infoOrder.status === 'DELIVERING') {
                 setIsDisableDelivering('')
                 setIsDisableReceived('')
+                setIsDisableCelled('')
             }
 
             if (orderDetail && orderDetail.infoOrder.status === 'RECEIVED') {
@@ -55,6 +58,25 @@ const DetailOrderPage = () => {
             status
         }
         dispatch(adminUpdateStatusOrderAction(dataRequest, id))
+    }
+
+    const checkPaymentStatus = (status) => {
+        if (status === 'unpaid') {
+            return {
+                content: 'Chưa thanh toán',
+                bgr: '#ff5252'
+            }
+        } else if (status === 'paid') {
+            return {
+                content: 'Đã thanh toán',
+                bgr: '#218c74'
+            }
+        } else {
+            return {
+                content: 'Không có trạng thái này',
+                bgr: ''
+            }
+        }
     }
 
     const checkMessage = () => {
@@ -79,7 +101,7 @@ const DetailOrderPage = () => {
             {orderDetail && (
                 <div className="layout-content-padding">
                     <div className='grid-col-2'>
-                        <h3 className='admin__order-titile-page'>Chi tiết đơn hàng</h3>
+                        <h3 className='admin__order-titile-page'>Chi tiết đơn hàng #{orderDetail.infoOrder.code_bill}</h3>
                         <Link to='/admin/order/list' className='btn btn-success'>Danh sách đơn đặt lịch</Link>
                     </div>
                     <div className='grid-col-2 admin__order'>
@@ -91,7 +113,10 @@ const DetailOrderPage = () => {
                         </div>
                         <div className="admin__order-general">
                             <h5 className='admin__order-heading'>Tổng quan</h5>
-                            <p>Ngày tạo: <span className='span-content-order'>{orderDetail.infoOrder.createdAt}</span></p>
+                            <p>Ngày tạo: <span className='span-content-order'>
+                                <Moment format="hh:mm DD/MM/YYYY ">
+                                    {orderDetail.infoOrder.createdAt}
+                                </Moment></span></p>
                             <p>Địa chỉ nhận hàng: <span className='span-content-order'>{orderDetail.infoOrder.address}</span></p>
                             <p>Phương thức thanh toán: <span className='span-content-order'>{orderDetail.infoOrder.paymentMethod}</span></p>
                         </div>
@@ -130,6 +155,18 @@ const DetailOrderPage = () => {
                         >
                             CANCELLED
                         </button>
+                    </div>
+                    <div className="admin__order-status">
+                        <h5 className='admin__order-heading'>Tình trạng thanh toán:
+                            <span
+                                className='admin__order-status-now'
+                                style={{
+                                    backgroundColor: `${orderDetail && checkPaymentStatus(orderDetail.infoOrder.paymentStatus).bgr}`,
+                                    padding: '10px', marginLeft: '10px'
+                                }}>
+                                {orderDetail && checkPaymentStatus(orderDetail.infoOrder.paymentStatus).content}
+                            </span>
+                        </h5>
                     </div>
                     <div>
                         <h5 className='admin__order-heading'>Sản phẩm</h5>

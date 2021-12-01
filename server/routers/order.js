@@ -6,6 +6,9 @@ const {
   listAllOrder,
   updateStatusOrderAdmin,
   orderDetail,
+  listAllOrderStatus,
+  searchOrderAdmin,
+  filterByDate,
 } = require("../controllers/order");
 const { verifyToken } = require("../middleware/auth");
 const { isAdmin } = require("../middleware/auth");
@@ -22,5 +25,8 @@ router.put(
   isAdmin,
   updateStatusOrderAdmin
 );
+router.post("/order/status", listAllOrderStatus);
+router.get("/order/admin/search", verifyToken, isAdmin, searchOrderAdmin);
+router.post("/order/filterByDate", filterByDate);
 
 module.exports = router;

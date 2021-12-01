@@ -28,6 +28,7 @@ import SearchProduct from "./pages/website/products/searchProduct";
 import CheckoutPage from "./pages/website/order";
 import ListOrderPage from "./pages/admin/orders";
 import DetailOrderPage from "./pages/admin/orders/detail-order";
+import SearchOrderAdmin from "./pages/admin/orders/search-order";
 
 const Routes = () => {
   return (
@@ -68,6 +69,9 @@ const Routes = () => {
               </AdminRouter>
               <AdminRouter exact path="/admin/order/detail/:orderId">
                 <DetailOrderPage />
+              </AdminRouter>
+              <AdminRouter exact path="/admin/order/search">
+                <SearchOrderAdmin />
               </AdminRouter>
               <Route path="**">
                 <NotFoundPage />

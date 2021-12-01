@@ -3,7 +3,7 @@ const argon2 = require("argon2");
 const jwt = require("jsonwebtoken");
 
 exports.register = async (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, email, password, phone, address } = req.body;
 
   // Validation
   if (!username || !email || !password) {
@@ -25,7 +25,13 @@ exports.register = async (req, res) => {
 
     // Mã hóa password
     const hassed_password = await argon2.hash(password);
-    const newUser = new User({ username, email, password: hassed_password });
+    const newUser = new User({
+      username,
+      email,
+      password: hassed_password,
+      phone,
+      address,
+    });
 
     newUser.save((err, user) => {
       if (err) {
@@ -98,6 +104,8 @@ exports.login = async (req, res) => {
         _id: user._id,
         username: user.username,
         email: user.email,
+        phone: user.phone,
+        address: user.address,
         role: user.role,
       },
       token,

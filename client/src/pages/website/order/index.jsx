@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, Redirect, useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { isAuthenticated } from '../../../redux/actions/auth'
@@ -42,6 +42,17 @@ const CheckoutPage = () => {
     }
 
     const { user } = isAuthenticated()
+    console.log(user)
+
+    useEffect(() => {
+        user && setvalues({
+            ...values,
+            username: user.username,
+            email: user.email,
+            phone: user.phone,
+            address: user.address
+        })
+    }, [])
 
     const dispatch = useDispatch()
 

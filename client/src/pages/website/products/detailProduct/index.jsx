@@ -147,9 +147,9 @@ const DetailProductPage = () => {
                         </div>
                         <div className='product__quantity-detail'>
                             <label>Số lượng:</label>
-                            <span onClick={decreaseQuantity}><i class="bi bi-dash-lg"></i></span>
+                            <span onClick={decreaseQuantity}><i className="bi bi-dash-lg"></i></span>
                             <input type="text" readOnly value={qty} className='input-quantity-detail' />
-                            <span onClick={increaseQuantity}><i class="bi bi-plus-lg"></i></span>
+                            <span onClick={increaseQuantity}><i className="bi bi-plus-lg"></i></span>
                         </div>
                         <div className="product__button-detail button-add-to-cart" onClick={() => handleAddToCart(product._id)}><Link to="#">Thêm giỏ hàng</Link></div>
                         <div className="product__button-detail button-buy"><Link to="#">Mua ngay</Link></div>

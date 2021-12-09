@@ -50,9 +50,9 @@ const CartProductPage = () => {
                                         <p className='cart__item-price-default'>{convertNumber(item.price_default)}</p>
                                     </div>
                                     <div className="cart__item-quantity">
-                                        <span onClick={() => decreaseQuantity(item.name, item.qty)}><i class="bi bi-dash-lg"></i></span>
+                                        <span onClick={() => decreaseQuantity(item.name, item.qty)}><i className="bi bi-dash-lg"></i></span>
                                         <input type="text" readOnly value={item.qty} className='cart_item-qty-input' />
-                                        <span onClick={() => increaseQuantity(item.name, item.qty)}><i class="bi bi-plus-lg"></i></span>
+                                        <span onClick={() => increaseQuantity(item.name, item.qty)}><i className="bi bi-plus-lg"></i></span>
                                     </div>
                                 </div>
                             ))}
@@ -78,7 +78,7 @@ const CartProductPage = () => {
                     </div>
                 ) : (
                     <div className='cart__empty-product-item'>
-                        <i class="bi bi-bag"></i>
+                        <i className="bi bi-bag"></i>
                         Giỏ hàng của bạn hiện tại không có sản phẩm nào
                     </div>
                 )}

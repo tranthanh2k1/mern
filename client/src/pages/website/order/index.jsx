@@ -13,10 +13,11 @@ const CheckoutPage = () => {
 
     const [values, setvalues] = useState({
         username: '',
+        email: '',
         phone: '',
         address: ''
     })
-    const { username, phone, address } = values
+    const { username, email, phone, address } = values
 
     const handleChange = (name) => (e) => {
         setvalues({ ...values, [name]: e.target.value })
@@ -41,6 +42,17 @@ const CheckoutPage = () => {
     }
 
     const { user } = isAuthenticated()
+    console.log(user)
+
+    useEffect(() => {
+        user && setvalues({
+            ...values,
+            username: user.username,
+            email: user.email,
+            phone: user.phone,
+            address: user.address
+        })
+    }, [])
 
     const dispatch = useDispatch()
 
@@ -56,6 +68,7 @@ const CheckoutPage = () => {
 
         const dataOrder = {
             username,
+            email,
             phone,
             address,
             paymentMethod: checked,
@@ -95,6 +108,15 @@ const CheckoutPage = () => {
                                     className='checkout__form-input'
                                     value={username}
                                     onChange={handleChange("username")}
+                                />
+                            </div>
+                            <div className='checkout__form-group'>
+                                <input
+                                    type="email"
+                                    placeholder='Email'
+                                    className='checkout__form-input'
+                                    value={email}
+                                    onChange={handleChange("email")}
                                 />
                             </div>
                             <div className='checkout__form-group'>

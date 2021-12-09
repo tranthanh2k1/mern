@@ -112,7 +112,7 @@ const Header = () => {
                                                     <p className='header__cart-item-name'>{item.name} x{item.qty}</p>
                                                     <p className='header__cart-item-price'>{convertNumber(item.price)}Đ</p>
                                                 </div>
-                                                <i class="bi bi-x-circle-fill" onClick={() => removeCartItem(item.name)}></i>
+                                                <i className="bi bi-x-circle-fill" onClick={() => removeCartItem(item.name)}></i>
                                             </div>
                                         ))}
                                     </div>

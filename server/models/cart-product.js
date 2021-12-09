@@ -23,6 +23,14 @@ const cartProductSchema = new Schema({
     type: mongoose.Types.ObjectId,
     ref: "Order",
   },
+  created_at: {
+    type: Date,
+    default: Date.now,
+  },
+  updated_at: {
+    type: Date,
+    default: null,
+  },
 });
 
 const CartProduct = mongoose.model("Cart_Product", cartProductSchema);

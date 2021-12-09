@@ -240,6 +240,7 @@ exports.updateStatusOrderAdmin = async (req, res) => {
       if (getStatusDB.status === "DELIVERING") {
         updatedStatusOrder = {
           status,
+          paymentStatus: "paid",
           updated_received: Date.now(),
         };
 
@@ -416,4 +417,115 @@ exports.filterByDate = (req, res) => {
         message: "Lấy đơn hàng thất bại",
       });
     });
+};
+
+exports.revenueByDay = async (req, res) => {
+  const { date } = req.body;
+
+  if (!date) {
+    return res.status(401).json({
+      success: false,
+      message: "Bạn cần nhập đầy đủ thông tin",
+    });
+  }
+
+  const order = await Order.find({
+    updated_received: {
+      $gte: new Date(new Date(date).setHours(00, 00, 00)),
+      $lt: new Date(new Date(date).setHours(23, 59, 59)),
+    },
+    paymentStatus: "paid",
+  });
+
+  if (!order) {
+    return res.status(401).json({
+      success: false,
+      message: "Lấy đơn hàng thất bại",
+    });
+  }
+
+  async function data1() {
+    let data = [];
+
+    for (let i = 0; i < order.length; i++) {
+      const element = {
+        order: order[i],
+      };
+
+      const pro = await CartProduct.find({ order_id: order[i]._id }).select(
+        "-__v -updated_at -order_id"
+      );
+      element.product = pro;
+
+      data.push(element);
+    }
+
+    return res.json(data);
+  }
+
+  data1();
+};
+
+exports.revenueByDays = async (req, res) => {
+  const { dateStart, dateEnd } = req.body;
+
+  if (!dateStart || !dateEnd) {
+    return res.status(401).json({
+      success: false,
+      message: "Bạn cần nhập đầy đủ thông tin",
+    });
+  }
+
+  const order = await Order.find({
+    updated_received: {
+      $gte: new Date(new Date(dateStart).setHours(00, 00, 00)),
+      $lt: new Date(new Date(dateEnd).setHours(23, 59, 59)),
+    },
+    paymentStatus: "paid",
+  });
+
+  if (!order) {
+    return res.status(401).json({
+      success: false,
+      message: "Không tìm thấy đơn hàng nào",
+    });
+  }
+
+  async function data1() {
+    let data = [];
+
+    for (let i = 0; i < order.length; i++) {
+      const element = {
+        order: order[i],
+      };
+
+      const pro = await CartProduct.find({ order_id: order[i]._id }).select(
+        "-__v -updated_at -order_id"
+      );
+      element.product = pro;
+
+      data.push(element);
+    }
+
+    return res.json(data);
+  }
+
+  data1();
+};
+
+exports.monthlyRevenue = async (req, res) => {
+  const { month } = req.body;
+
+  const filterMonth = await Order.find({
+    updated_delivering: new Date(month).setMonth(),
+    paymentStatus: "paid",
+  });
+
+  if (!filterMonth) {
+    return res.status(401).json({
+      error: "Không tìm thấy đơn hàng nào",
+    });
+  }
+
+  res.status(200).json(filterMonth);
 };

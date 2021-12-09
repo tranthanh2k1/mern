@@ -73,8 +73,16 @@ const ListOrderPage = () => {
     const inputDateRef = useRef(date)
 
     const handleSelectStatus = (e) => {
+        if (e.target.value === '') {
+            return
+        }
+
         if (e.target.value === 'all') {
             // paginationRef.current.style.display = 'block'
+
+            setDate('')
+            inputDateRef.current.value = ""
+
             return dispatch(listAllOrderAdminAction(1))
         }
 
@@ -118,7 +126,8 @@ const ListOrderPage = () => {
                     aria-label="Default select example"
                     onChange={handleSelectStatus}
                 >
-                    <option selected value="all">---Tất cả---</option>
+                    <option selected value="">---Lọc theo trạng thái---</option>
+                    <option value="all">Tất cả</option>
                     {dataOption.map(item => (
                         <>
                             <option key={item.value} value={item.value}>{item.content}</option>

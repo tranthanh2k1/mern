@@ -271,7 +271,6 @@ exports.updateStatusOrderAdmin = async (req, res) => {
     case "CANCELLED":
       if (
         getStatusDB.status === "PROCESSING" ||
-        getStatusDB.status === "DELIVERING" ||
         getStatusDB.status === "DELIVERING"
       ) {
         updatedStatusOrder = {
@@ -431,8 +430,8 @@ exports.revenueByDay = async (req, res) => {
 
   const order = await Order.find({
     updated_received: {
-      $gte: new Date(new Date(date).setHours(00, 00, 00)),
-      $lt: new Date(new Date(date).setHours(23, 59, 59)),
+      $gte: new Date(date).setHours(00, 00, 00),
+      $lt: new Date(date).setHours(23, 59, 59),
     },
     paymentStatus: "paid",
   });
@@ -478,8 +477,8 @@ exports.revenueByDays = async (req, res) => {
 
   const order = await Order.find({
     updated_received: {
-      $gte: new Date(new Date(dateStart).setHours(00, 00, 00)),
-      $lt: new Date(new Date(dateEnd).setHours(23, 59, 59)),
+      $gte: new Date(dateStart).setHours(00, 00, 00),
+      $lt: new Date(dateEnd).setHours(23, 59, 59),
     },
     paymentStatus: "paid",
   });
@@ -517,7 +516,7 @@ exports.monthlyRevenue = async (req, res) => {
   const { month } = req.body;
 
   const filterMonth = await Order.find({
-    updated_delivering: new Date(month).setMonth(),
+    updated_delivering: new Date().setDate(month),
     paymentStatus: "paid",
   });
 
@@ -528,4 +527,168 @@ exports.monthlyRevenue = async (req, res) => {
   }
 
   res.status(200).json(filterMonth);
+};
+
+exports.listAllOrderUser = async (req, res) => {
+  const user = req.userId;
+
+  // get list table order
+  const order = await Order.find({ user_id: user._id }).sort({ createdAt: -1 });
+
+  if (!order) {
+    return res.status(400).json({
+      error: "Không tìm thấy đơn hàng nào",
+    });
+  }
+
+  const arrayId = [];
+
+  order.map((item) => arrayId.push(item._id));
+
+  // get list table cart_product
+  const cartPro = await CartProduct.find({
+    order_id: { $in: arrayId },
+  });
+
+  if (!cartPro) {
+    return res.status(400).json({
+      error: "Không tìm thấy đơn hàng nào",
+    });
+  }
+
+  // res data order and cart product of user
+  const orderUser = [];
+
+  order.map((itemOrder) => {
+    let dataOutput = {
+      order: itemOrder,
+    };
+    let cart = [];
+
+    const cartFilter = cartPro.filter(
+      (itemCart) => itemCart.order_id.toString() === itemOrder._id.toString()
+    );
+
+    cart.push(cartFilter);
+
+    dataOutput.cart = cart[0];
+
+    orderUser.push(dataOutput);
+  });
+
+  res.status(200).json(orderUser);
+};
+
+exports.listOrderStatusUser = async (req, res) => {
+  const user = req.userId;
+
+  const { status } = req.body;
+
+  if (!status) {
+    return res.status(401).json({
+      error: "Bạn cần nhập đầy đủ thông tin",
+    });
+  }
+
+  if (
+    status === "PROCESSING" ||
+    status === "DELIVERING" ||
+    status === "RECEIVED" ||
+    status === "CANCELLED"
+  ) {
+    const order = await Order.find({ status, user_id: user._id }).sort({
+      createdAt: -1,
+    });
+    if (!order) {
+      return res.status(401).json({
+        error: "Không tìm thấy đơn hàng nào",
+      });
+    }
+
+    const arrayId = [];
+
+    order.map((item) => arrayId.push(item._id));
+
+    // get list table cart_product
+    const cartPro = await CartProduct.find({
+      order_id: { $in: arrayId },
+    });
+
+    if (!cartPro) {
+      return res.status(400).json({
+        error: "Không tìm thấy đơn hàng nào",
+      });
+    }
+
+    // res data order and cart product of user
+    const orderUser = [];
+
+    order.map((itemOrder) => {
+      let dataOutput = {
+        order: itemOrder,
+      };
+      let cart = [];
+
+      const cartFilter = cartPro.filter(
+        (itemCart) => itemCart.order_id.toString() === itemOrder._id.toString()
+      );
+
+      cart.push(cartFilter);
+
+      dataOutput.cart = cart[0];
+
+      orderUser.push(dataOutput);
+    });
+
+    res.status(200).json(orderUser);
+  } else {
+    return res.status(400).json({
+      error: "Không tìm thấy trạng thái nào phù hợp",
+    });
+  }
+};
+
+exports.cancelOrderUser = async (req, res) => {
+  const user = req.userId;
+
+  const { status } = req.body;
+
+  const { orderId } = req.params;
+
+  const getStatusDB = await Order.findOne({ _id: orderId, user_id: user._id });
+
+  if (!status && status !== "CANCELLED") {
+    return res.status(401).json({
+      error: "Trạng thái đơn hàng không phù hợp",
+    });
+  }
+
+  let cancelOrderUser;
+
+  if (getStatusDB.status === "PROCESSING") {
+    cancelOrderUser = {
+      status: "CANCELLED",
+      updated_cancelled: Date.now(),
+    };
+    cancelOrderUser = await Order.findOneAndUpdate(
+      { _id: orderId },
+      cancelOrderUser,
+      { new: true }
+    );
+
+    if (!cancelOrderUser) {
+      return res.status(401).json({
+        error: "Hủy đơn hàng không thành công",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Hủy đơn hàng thành công",
+    });
+  } else {
+    return res.status(401).json({
+      error: "Không thể hủy đơn hàng này",
+    });
+  }
 };

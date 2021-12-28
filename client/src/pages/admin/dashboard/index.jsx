@@ -11,7 +11,6 @@ const AdminDashboard = () => {
     const [date, setDate] = useState('')
     const [dateStart, setDateStart] = useState('')
     const [dateEnd, setDateEnd] = useState('')
-    console.log(totalAllOrder)
 
     const [choseFilter, setChoseFilter] = useState('Thống kê theo ngày')
 
@@ -182,7 +181,7 @@ const AdminDashboard = () => {
                                 <tr>
                                     <th scope="col">Mã</th>
                                     <th scope="col">Đơn hàng</th>
-                                    <th scope="col">Ngày tạo</th>
+                                    <th scope="col">Thời gian thanh toán</th>
                                     <th scope="col">Trạng thái đơn hàng</th>
                                     <th></th>
                                 </tr>
@@ -194,7 +193,7 @@ const AdminDashboard = () => {
                                         <td>{item.order.username}</td>
                                         <td>
                                             <Moment format="hh:mm DD/MM/YYYY ">
-                                                {item.order.createdAt}
+                                                {item.order.updated_received}
                                             </Moment>
                                         </td>
                                         <td>

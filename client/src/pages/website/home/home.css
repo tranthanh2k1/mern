@@ -268,12 +268,13 @@
 
 .w-header-account-login {
   width: 120px;
-  height: 75px;
+  height: 125px;
   border: 1px solid rgb(235, 223, 223);
   position: absolute;
   top: 100%;
   display: none;
   background-color: #ffffff;
+  z-index: 99;
 }
 
 .w-header-account-unlogin > a {

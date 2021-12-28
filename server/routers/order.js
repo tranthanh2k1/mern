@@ -12,12 +12,18 @@ const {
   revenueByDay,
   revenueByDays,
   monthlyRevenue,
+  listAllOrderUser,
+  listOrderStatusUser,
+  cancelOrderUser,
 } = require("../controllers/order");
 const { verifyToken } = require("../middleware/auth");
 const { isAdmin } = require("../middleware/auth");
 
 // user
 router.post("/order", saveOrder);
+router.get("/order/user/all", verifyToken, listAllOrderUser);
+router.post("/order/user/status", verifyToken, listOrderStatusUser);
+router.put("/order/user/cancel/:orderId", verifyToken, cancelOrderUser);
 
 // admin
 router.get("/orderListAll", listAllOrder);

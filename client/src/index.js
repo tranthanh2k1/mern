@@ -17,6 +17,8 @@ import "./pages/website/cart/cart.css";
 import "./pages/website/products/searchProduct/search-product.css";
 import "./pages/website/order/checkout.css";
 import "./pages/admin/orders/order-admin.css";
+import "./pages/website/user/Purchase/purchase.css";
+import "./pages/website/user/Purchase/stepper.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import rootReducer from "./redux/reducers";

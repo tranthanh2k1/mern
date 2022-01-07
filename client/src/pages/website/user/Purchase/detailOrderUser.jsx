@@ -50,7 +50,7 @@ const DetailOrderUserPage = () => {
                                                 <div className="step-icon"><i className="pe-7s-cart" /></div>
                                             </div>
                                             <h4 className="step-title">Chờ xử lý</h4>
-                                            <span>{moment(new Date(orderDetail.infoOrder.createdAt)).format("h:mm L")}</span>
+                                            <span>{moment(new Date(orderDetail.infoOrder.createdAt)).format("h:mm A L")}</span>
                                         </div>
                                     )}
                                     {orderDetail.infoOrder.updated_delivering && (
@@ -59,7 +59,7 @@ const DetailOrderUserPage = () => {
                                                 <div className="step-icon"><i className="pe-7s-car" /></div>
                                             </div>
                                             <h4 className="step-title">Đang giao</h4>
-                                            <span>{moment(new Date(orderDetail.infoOrder.updated_delivering)).format("h:mm L")}</span>
+                                            <span>{moment(new Date(orderDetail.infoOrder.updated_delivering)).format("h:mm A L")}</span>
                                         </div>
                                     )}
                                     {orderDetail.infoOrder.updated_received && (
@@ -68,7 +68,7 @@ const DetailOrderUserPage = () => {
                                                 <div className="step-icon"><i className="pe-7s-home"></i></div>
                                             </div>
                                             <h4 className="step-title">Đã nhận</h4>
-                                            <span>{moment(new Date(orderDetail.infoOrder.updated_received)).format("h:mm L")}</span>
+                                            <span>{moment(new Date(orderDetail.infoOrder.updated_received)).format("h:mm A L")}</span>
                                         </div>
                                     )}
                                     {orderDetail.infoOrder.updated_cancelled && (
@@ -77,7 +77,7 @@ const DetailOrderUserPage = () => {
                                                 <div className="step-icon"><i className="pe-7s-medal" /></div>
                                             </div>
                                             <h4 className="step-title">Đã hủy</h4>
-                                            <span>{moment(new Date(orderDetail.infoOrder.updated_cancelled)).format("h:mm L")}</span>
+                                            <span>{moment(new Date(orderDetail.infoOrder.updated_cancelled)).format("h:mm A L")}</span>
                                         </div>
                                     )}
                                 </div>

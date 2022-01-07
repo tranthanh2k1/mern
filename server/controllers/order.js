@@ -115,7 +115,7 @@ exports.saveOrder = async (req, res) => {
 exports.listAllOrder = (req, res) => {
   let page = req.query.page;
 
-  const page_size = 5;
+  const page_size = 10;
 
   if (page) {
     page = parseInt(page);
@@ -256,7 +256,6 @@ exports.updateStatusOrderAdmin = async (req, res) => {
             message: "Update status đơn hàng không thành công",
           });
         }
-
         res.status(200).json({
           success: true,
           message: "Update status đơn hàng thành công",
@@ -268,6 +267,7 @@ exports.updateStatusOrderAdmin = async (req, res) => {
           message: "Không thể update status này",
         });
       }
+      break;
     case "CANCELLED":
       if (
         getStatusDB.status === "PROCESSING" ||
@@ -490,44 +490,61 @@ exports.revenueByDays = async (req, res) => {
     });
   }
 
-  async function data1() {
-    let data = [];
+  const totalMoney = order.reduce((acc, item) => {
+    return acc + item.intoMoney;
+  }, 0);
 
-    for (let i = 0; i < order.length; i++) {
-      const element = {
-        order: order[i],
-      };
+  // get array date(label)
+  let arrayDate = [];
 
-      const pro = await CartProduct.find({ order_id: order[i]._id }).select(
-        "-__v -updated_at -order_id"
-      );
-      element.product = pro;
+  for (let i = 0; i < order.length; i++) {
+    const result = moment(new Date(order[i].updated_received)).format("DD/MM");
 
-      data.push(element);
+    if (!arrayDate.includes(result)) {
+      arrayDate.push(result);
     }
-
-    return res.json(data);
   }
 
-  data1();
-};
+  // get array money(data)
+  let arrayMoney = [];
 
-exports.monthlyRevenue = async (req, res) => {
-  const { month } = req.body;
-
-  const filterMonth = await Order.find({
-    updated_delivering: new Date().setDate(month),
-    paymentStatus: "paid",
+  const arrayMoneyDate = arrayDate.map((item) => {
+    return order.filter(
+      (it) => moment(new Date(it.updated_received)).format("DD/MM") === item
+    );
   });
 
-  if (!filterMonth) {
-    return res.status(401).json({
-      error: "Không tìm thấy đơn hàng nào",
-    });
-  }
+  arrayMoneyDate.map((item) => {
+    arrayMoney.push(
+      item.reduce((acc, item) => {
+        return acc + item.intoMoney;
+      }, 0)
+    );
+  });
 
-  res.status(200).json(filterMonth);
+  res.status(200).json({
+    totalMoney,
+    arrayDate: arrayDate.sort(),
+    arrayMoney,
+  });
 };
+
+// exports.monthlyRevenue = async (req, res) => {
+//   const { month } = req.body;
+
+//   const filterMonth = await Order.find({
+//     updated_delivering: new Date().setDate(month),
+//     paymentStatus: "paid",
+//   });
+
+//   if (!filterMonth) {
+//     return res.status(401).json({
+//       error: "Không tìm thấy đơn hàng nào",
+//     });
+//   }
+
+//   res.status(200).json(filterMonth);
+// };
 
 exports.listAllOrderUser = async (req, res) => {
   const user = req.userId;
@@ -691,4 +708,49 @@ exports.cancelOrderUser = async (req, res) => {
       error: "Không thể hủy đơn hàng này",
     });
   }
+};
+
+exports.businessResults = async (req, res) => {
+  const { dateStart } = req.body;
+
+  const processingOrder = await Order.find({
+    createdAt: {
+      $gte: new Date(dateStart).setHours(00, 00, 00),
+      $lt: new Date(moment()).setHours(23, 59, 59),
+    },
+  });
+
+  const cancelOrder = await Order.find({
+    updated_cancelled: {
+      $gte: new Date(dateStart).setHours(00, 00, 00),
+      $lt: new Date(moment()).setHours(23, 59, 59),
+    },
+    status: "CANCELLED",
+  });
+
+  Order.find({
+    updated_received: {
+      $gte: new Date(dateStart).setHours(00, 00, 00),
+      $lt: new Date(moment()).setHours(23, 59, 59),
+    },
+    status: "RECEIVED",
+  })
+    .then((data) => {
+      const revenue = data.reduce((acc, item) => {
+        return acc + item.intoMoney;
+      }, 0);
+
+      res.json({
+        revenue,
+        processingOrder: processingOrder.length,
+        recceivedOrder: data.length,
+        cancelOrder: cancelOrder.length,
+      });
+    })
+    .catch((error) => {
+      console.log("error", error);
+      return res.status(401).json({
+        error: "Không tìm thấy đơn hàng nào",
+      });
+    });
 };

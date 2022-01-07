@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 
 import Moment from 'react-moment';
+import { CSVLink } from "react-csv";
 import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
 import { adminFilterDateOrderAction, adminListOrderStatusAction, listAllOrderAdminAction } from '../../../redux/actions/orderAdmin';
@@ -9,6 +10,7 @@ const ListOrderPage = () => {
     const [date, setDate] = useState('')
 
     const { listOrder, totalPage, error } = useSelector(state => state.orderAdmin)
+    console.log("listorrder", listOrder)
 
     const dispatch = useDispatch()
 
@@ -106,6 +108,15 @@ const ListOrderPage = () => {
         dispatch(adminFilterDateOrderAction(date))
     }
 
+    const headers = [
+        { label: "Mã hóa đơn", key: "code_bill" },
+        { label: "Họ và tên", key: "username" },
+        { label: "Địa chỉ nhận hàng", key: "address" },
+        { label: "Email", key: "email" },
+        { label: "Số diện thoại", key: "phone" },
+        { label: "Tổng doanh thu", key: "" }
+    ];
+
     return (
         <div className="layout-content">
             {error && alert(error)}
@@ -134,6 +145,9 @@ const ListOrderPage = () => {
                         </>
                     ))}
                 </select>
+                <CSVLink className='btn btn-success w-2' data={listOrder && listOrder} headers={headers}>
+                    Xuất ra excel
+                </CSVLink>
                 <table className="table caption-top">
                     <thead>
                         <tr>

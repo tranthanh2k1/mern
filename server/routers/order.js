@@ -15,6 +15,7 @@ const {
   listAllOrderUser,
   listOrderStatusUser,
   cancelOrderUser,
+  businessResults,
 } = require("../controllers/order");
 const { verifyToken } = require("../middleware/auth");
 const { isAdmin } = require("../middleware/auth");
@@ -39,6 +40,7 @@ router.get("/order/admin/search", verifyToken, isAdmin, searchOrderAdmin);
 router.post("/order/filterByDate", filterByDate);
 router.post("/order/revenueByDay", revenueByDay);
 router.post("/order/revenueByDays", revenueByDays);
-router.post("/order/monthlyRevenue", monthlyRevenue);
+// router.post("/order/monthlyRevenue", monthlyRevenue);
+router.post("/order/businessResults", businessResults);
 
 module.exports = router;

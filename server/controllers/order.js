@@ -115,7 +115,7 @@ exports.saveOrder = async (req, res) => {
 exports.listAllOrder = (req, res) => {
   let page = req.query.page;
 
-  const page_size = 5;
+  const page_size = 10;
 
   if (page) {
     page = parseInt(page);
@@ -240,6 +240,7 @@ exports.updateStatusOrderAdmin = async (req, res) => {
       if (getStatusDB.status === "DELIVERING") {
         updatedStatusOrder = {
           status,
+          paymentStatus: "paid",
           updated_received: Date.now(),
         };
 
@@ -255,7 +256,6 @@ exports.updateStatusOrderAdmin = async (req, res) => {
             message: "Update status đơn hàng không thành công",
           });
         }
-
         res.status(200).json({
           success: true,
           message: "Update status đơn hàng thành công",
@@ -267,10 +267,10 @@ exports.updateStatusOrderAdmin = async (req, res) => {
           message: "Không thể update status này",
         });
       }
+      break;
     case "CANCELLED":
       if (
         getStatusDB.status === "PROCESSING" ||
-        getStatusDB.status === "DELIVERING" ||
         getStatusDB.status === "DELIVERING"
       ) {
         updatedStatusOrder = {
@@ -414,6 +414,343 @@ exports.filterByDate = (req, res) => {
       return res.status(401).json({
         success: false,
         message: "Lấy đơn hàng thất bại",
+      });
+    });
+};
+
+exports.revenueByDay = async (req, res) => {
+  const { date } = req.body;
+
+  if (!date) {
+    return res.status(401).json({
+      success: false,
+      message: "Bạn cần nhập đầy đủ thông tin",
+    });
+  }
+
+  const order = await Order.find({
+    updated_received: {
+      $gte: new Date(date).setHours(00, 00, 00),
+      $lt: new Date(date).setHours(23, 59, 59),
+    },
+    paymentStatus: "paid",
+  });
+
+  if (!order) {
+    return res.status(401).json({
+      success: false,
+      message: "Lấy đơn hàng thất bại",
+    });
+  }
+
+  async function data1() {
+    let data = [];
+
+    for (let i = 0; i < order.length; i++) {
+      const element = {
+        order: order[i],
+      };
+
+      const pro = await CartProduct.find({ order_id: order[i]._id }).select(
+        "-__v -updated_at -order_id"
+      );
+      element.product = pro;
+
+      data.push(element);
+    }
+
+    return res.json(data);
+  }
+
+  data1();
+};
+
+exports.revenueByDays = async (req, res) => {
+  const { dateStart, dateEnd } = req.body;
+
+  if (!dateStart || !dateEnd) {
+    return res.status(401).json({
+      success: false,
+      message: "Bạn cần nhập đầy đủ thông tin",
+    });
+  }
+
+  const order = await Order.find({
+    updated_received: {
+      $gte: new Date(dateStart).setHours(00, 00, 00),
+      $lt: new Date(dateEnd).setHours(23, 59, 59),
+    },
+    paymentStatus: "paid",
+  });
+
+  if (!order) {
+    return res.status(401).json({
+      success: false,
+      message: "Không tìm thấy đơn hàng nào",
+    });
+  }
+
+  const totalMoney = order.reduce((acc, item) => {
+    return acc + item.intoMoney;
+  }, 0);
+
+  // get array date(label)
+  let arrayDate = [];
+
+  for (let i = 0; i < order.length; i++) {
+    const result = moment(new Date(order[i].updated_received)).format("DD/MM");
+
+    if (!arrayDate.includes(result)) {
+      arrayDate.push(result);
+    }
+  }
+
+  // get array money(data)
+  let arrayMoney = [];
+
+  const arrayMoneyDate = arrayDate.map((item) => {
+    return order.filter(
+      (it) => moment(new Date(it.updated_received)).format("DD/MM") === item
+    );
+  });
+
+  arrayMoneyDate.map((item) => {
+    arrayMoney.push(
+      item.reduce((acc, item) => {
+        return acc + item.intoMoney;
+      }, 0)
+    );
+  });
+
+  res.status(200).json({
+    totalMoney,
+    arrayDate: arrayDate.sort(),
+    arrayMoney,
+  });
+};
+
+// exports.monthlyRevenue = async (req, res) => {
+//   const { month } = req.body;
+
+//   const filterMonth = await Order.find({
+//     updated_delivering: new Date().setDate(month),
+//     paymentStatus: "paid",
+//   });
+
+//   if (!filterMonth) {
+//     return res.status(401).json({
+//       error: "Không tìm thấy đơn hàng nào",
+//     });
+//   }
+
+//   res.status(200).json(filterMonth);
+// };
+
+exports.listAllOrderUser = async (req, res) => {
+  const user = req.userId;
+
+  // get list table order
+  const order = await Order.find({ user_id: user._id }).sort({ createdAt: -1 });
+
+  if (!order) {
+    return res.status(400).json({
+      error: "Không tìm thấy đơn hàng nào",
+    });
+  }
+
+  const arrayId = [];
+
+  order.map((item) => arrayId.push(item._id));
+
+  // get list table cart_product
+  const cartPro = await CartProduct.find({
+    order_id: { $in: arrayId },
+  });
+
+  if (!cartPro) {
+    return res.status(400).json({
+      error: "Không tìm thấy đơn hàng nào",
+    });
+  }
+
+  // res data order and cart product of user
+  const orderUser = [];
+
+  order.map((itemOrder) => {
+    let dataOutput = {
+      order: itemOrder,
+    };
+    let cart = [];
+
+    const cartFilter = cartPro.filter(
+      (itemCart) => itemCart.order_id.toString() === itemOrder._id.toString()
+    );
+
+    cart.push(cartFilter);
+
+    dataOutput.cart = cart[0];
+
+    orderUser.push(dataOutput);
+  });
+
+  res.status(200).json(orderUser);
+};
+
+exports.listOrderStatusUser = async (req, res) => {
+  const user = req.userId;
+
+  const { status } = req.body;
+
+  if (!status) {
+    return res.status(401).json({
+      error: "Bạn cần nhập đầy đủ thông tin",
+    });
+  }
+
+  if (
+    status === "PROCESSING" ||
+    status === "DELIVERING" ||
+    status === "RECEIVED" ||
+    status === "CANCELLED"
+  ) {
+    const order = await Order.find({ status, user_id: user._id }).sort({
+      createdAt: -1,
+    });
+    if (!order) {
+      return res.status(401).json({
+        error: "Không tìm thấy đơn hàng nào",
+      });
+    }
+
+    const arrayId = [];
+
+    order.map((item) => arrayId.push(item._id));
+
+    // get list table cart_product
+    const cartPro = await CartProduct.find({
+      order_id: { $in: arrayId },
+    });
+
+    if (!cartPro) {
+      return res.status(400).json({
+        error: "Không tìm thấy đơn hàng nào",
+      });
+    }
+
+    // res data order and cart product of user
+    const orderUser = [];
+
+    order.map((itemOrder) => {
+      let dataOutput = {
+        order: itemOrder,
+      };
+      let cart = [];
+
+      const cartFilter = cartPro.filter(
+        (itemCart) => itemCart.order_id.toString() === itemOrder._id.toString()
+      );
+
+      cart.push(cartFilter);
+
+      dataOutput.cart = cart[0];
+
+      orderUser.push(dataOutput);
+    });
+
+    res.status(200).json(orderUser);
+  } else {
+    return res.status(400).json({
+      error: "Không tìm thấy trạng thái nào phù hợp",
+    });
+  }
+};
+
+exports.cancelOrderUser = async (req, res) => {
+  const user = req.userId;
+
+  const { status } = req.body;
+
+  const { orderId } = req.params;
+
+  const getStatusDB = await Order.findOne({ _id: orderId, user_id: user._id });
+
+  if (!status && status !== "CANCELLED") {
+    return res.status(401).json({
+      error: "Trạng thái đơn hàng không phù hợp",
+    });
+  }
+
+  let cancelOrderUser;
+
+  if (getStatusDB.status === "PROCESSING") {
+    cancelOrderUser = {
+      status: "CANCELLED",
+      updated_cancelled: Date.now(),
+    };
+    cancelOrderUser = await Order.findOneAndUpdate(
+      { _id: orderId },
+      cancelOrderUser,
+      { new: true }
+    );
+
+    if (!cancelOrderUser) {
+      return res.status(401).json({
+        error: "Hủy đơn hàng không thành công",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Hủy đơn hàng thành công",
+    });
+  } else {
+    return res.status(401).json({
+      error: "Không thể hủy đơn hàng này",
+    });
+  }
+};
+
+exports.businessResults = async (req, res) => {
+  const { dateStart } = req.body;
+
+  const processingOrder = await Order.find({
+    createdAt: {
+      $gte: new Date(dateStart).setHours(00, 00, 00),
+      $lt: new Date(moment()).setHours(23, 59, 59),
+    },
+  });
+
+  const cancelOrder = await Order.find({
+    updated_cancelled: {
+      $gte: new Date(dateStart).setHours(00, 00, 00),
+      $lt: new Date(moment()).setHours(23, 59, 59),
+    },
+    status: "CANCELLED",
+  });
+
+  Order.find({
+    updated_received: {
+      $gte: new Date(dateStart).setHours(00, 00, 00),
+      $lt: new Date(moment()).setHours(23, 59, 59),
+    },
+    status: "RECEIVED",
+  })
+    .then((data) => {
+      const revenue = data.reduce((acc, item) => {
+        return acc + item.intoMoney;
+      }, 0);
+
+      res.json({
+        revenue,
+        processingOrder: processingOrder.length,
+        recceivedOrder: data.length,
+        cancelOrder: cancelOrder.length,
+      });
+    })
+    .catch((error) => {
+      console.log("error", error);
+      return res.status(401).json({
+        error: "Không tìm thấy đơn hàng nào",
       });
     });
 };

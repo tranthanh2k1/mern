@@ -30,7 +30,6 @@ const SearchOrderAdmin = () => {
                         Authorization: `Bearer ${token}`,
                     },
                 })
-                console.log(data)
 
                 setOrder(data.orderSearch)
             } catch (error) {

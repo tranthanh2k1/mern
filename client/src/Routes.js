@@ -29,6 +29,13 @@ import CheckoutPage from "./pages/website/order";
 import ListOrderPage from "./pages/admin/orders";
 import DetailOrderPage from "./pages/admin/orders/detail-order";
 import SearchOrderAdmin from "./pages/admin/orders/search-order";
+import PurchaseUserPage from "./pages/website/user/Purchase";
+import ListAllOrderUser from "./pages/website/user/Purchase/listAllUser";
+import ProcessingUserPage from "./pages/website/user/Purchase/processing";
+import DeliveringUserPage from "./pages/website/user/Purchase/delivering";
+import ReceivedUserPae from "./pages/website/user/Purchase/received";
+import CancelledUserPage from "./pages/website/user/Purchase/cancelled";
+import DetailOrderUserPage from "./pages/website/user/Purchase/detailOrderUser";
 
 const Routes = () => {
   return (
@@ -109,6 +116,41 @@ const Routes = () => {
               <Route exact path="/cart/checkout">
                 <CheckoutPage />
               </Route>
+              {/* <Route exact path="/thanh/order/:id">
+                <StepperOrder />
+              </Route> */}
+              <PurchaseUserPage>
+                <Route
+                  exact
+                  path="/user/purchase"
+                  component={ListAllOrderUser}
+                />
+                <Route
+                  exact
+                  path="/user/purchase/type1"
+                  component={ProcessingUserPage}
+                />
+                <Route
+                  exact
+                  path="/user/purchase/type2"
+                  component={DeliveringUserPage}
+                />
+                <Route
+                  exact
+                  path="/user/purchase/type3"
+                  component={ReceivedUserPae}
+                />
+                <Route
+                  exact
+                  path="/user/purchase/type4"
+                  component={CancelledUserPage}
+                />
+                <Route
+                  exact
+                  path="/user/purchase/order/:id"
+                  component={DetailOrderUserPage}
+                />
+              </PurchaseUserPage>
               <Route path="**">
                 <NotFoundPage />
               </Route>

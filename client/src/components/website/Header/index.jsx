@@ -50,6 +50,12 @@ const Header = () => {
         dispatch(removeCartProdutItem(idCartItem))
     }
 
+    function splitName() {
+        const lastName = user.username.split(' ')
+
+        return lastName[lastName.length - 1]
+    }
+
     return (
         <div className="full-width w-header">
             <div className="container">
@@ -81,7 +87,8 @@ const Header = () => {
                             <i className="bi bi-caret-down"></i>
                             {pathname !== 'login' && isLogged ?
                                 (<div className="w-header-account-login">
-                                    <Link className="mx-2">{user.username}</Link>
+                                    <Link to="" className="mx-2">{splitName()}</Link>
+                                    <Link to="/user/purchase" className="mx-2">Đơn mua</Link>
                                     <Link to="" onClick={() => signout(() => {
                                         setIsLogged(false)
                                         history.push('/')

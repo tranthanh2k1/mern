@@ -5,7 +5,7 @@ const SideBarAdmin = () => {
     return (
         <div className="sidebarr">
             <div className="sidebarr__top">Trần Tiến Thành</div>
-            <ul className="sidebarr__list" style={{ padding: "0px" }}>
+            <ul className="sidebarr__list" style={{ padding: "0px", margin: '0' }}>
                 <li className="sidebarr__li"><Link to="/admin/dashboard" className="sidebarr__a"><i className="bi bi-speedometer2"></i>Dashboard</Link></li>
                 <li className="sidebarr__li"><Link to="/admin/category" className="sidebarr__a"><i className="bi bi-columns-gap"></i>Category</Link></li>
                 <li className="sidebarr__li"><Link to="/admin/product" className="sidebarr__a"><i className="bi bi-stop-circle"></i>Product</Link></li>

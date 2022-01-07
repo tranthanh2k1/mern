@@ -42,7 +42,6 @@ const CheckoutPage = () => {
     }
 
     const { user } = isAuthenticated()
-    console.log(user)
 
     useEffect(() => {
         user && setvalues({
@@ -81,7 +80,7 @@ const CheckoutPage = () => {
         if (data.success) {
             alert(data.message)
             dispatch(removeAllCartProduct())
-            history.push('/')
+            history.push('/user/purchase')
         }
     }
 
